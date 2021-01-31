@@ -15,7 +15,7 @@ const logger = createLogger({
     ),
     transports : [
         new transports.Console(),
-        new transports.File({ filename : resolve(process.cwd(), "logs", "error.log") })
+        new transports.File({ filename : resolve(process.cwd(), "logs", "server.log") })
     ]
 });
 
