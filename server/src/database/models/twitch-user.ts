@@ -9,4 +9,16 @@ const TwitchUserSchema: Mongoose.Schema = new Mongoose.Schema({
     channelEmotes : [{ type: Mongoose.Schema.Types.ObjectId, ref: "emote" }],
 });
 
-export default Mongoose.model("user", TwitchUserSchema);
+export type TwitchUser = {
+    twitchId      : string;
+    username      : string;
+    name          : string;
+    email         : string;
+    picture       : string;
+    channelEmotes : string[];
+};
+
+export type TwitchUserDoc = Mongoose.Document<TwitchUser>;
+
+
+export default Mongoose.model<TwitchUserDoc>("user", TwitchUserSchema);

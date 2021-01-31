@@ -1,5 +1,7 @@
 import * as Mongoose from "mongoose";
 
+import { TwitchUser } from "./twitch-user";
+
 const EmoteSchema: Mongoose.Schema = new Mongoose.Schema({
     keyword    : { type: String, unique: true, required: true },
     timestamps : {},
@@ -15,4 +17,12 @@ const EmoteSchema: Mongoose.Schema = new Mongoose.Schema({
     },
 });
 
-export default Mongoose.model("emote", EmoteSchema);
+export type Emote = {
+    keyword : string;
+    type    : "gif" | "image";
+    owner   : TwitchUser | string;
+};
+
+export type EmoteDoc = Mongoose.Document<Emote>
+
+export default Mongoose.model<EmoteDoc>("emote", EmoteSchema);
