@@ -1,12 +1,9 @@
-abstract class RoutingError extends Error {
-    protected _errors: string[] = [];
+export type BasicErrorResponse = { message: string };
 
+abstract class RoutingError<T = BasicErrorResponse> extends Error {
     abstract get status(): number;
     abstract get message(): string;
-
-    get errors(): string[] {
-        return this._errors;
-    }
+    abstract toJson(): T;
 }
 
 export default RoutingError;

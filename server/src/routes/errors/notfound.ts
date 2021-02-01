@@ -8,6 +8,10 @@ class NotFoundError extends RoutingError {
     get message(): string {
         return "We couldn't find what you're looking for!";
     }
+
+    toJson() {
+        return { message: this.message };
+    }
 }
 
 export default NotFoundError;

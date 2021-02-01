@@ -8,6 +8,10 @@ class UnauthenticatedError extends RoutingError {
     get message(): string {
         return "Unauthenticated";
     }
+
+    toJson() {
+        return { message: this.message };
+    }
 }
 
 export default UnauthenticatedError;
