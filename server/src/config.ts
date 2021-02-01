@@ -10,5 +10,12 @@ export const MONGO_URL = process.env.DB_URL || `mongodb://${DB_CRED}${DB_HOST}:$
 
 export const PORT = process.env.PORT || 8081;
 
-export const JWT_SECRET = process.env.JWT_SECRET || "POTATO";
-export const JWT_EXPIRE_IN = process.env.JWT_EXPIRE_IN || 604800000; // 5 days
+export const FRONTEND_BASE_URI: string = process.env.FRONTEND_BASE_URI!;
+
+export const JWT_SECRET: string    = process.env.JWT_SECRET!;
+export const JWT_EXPIRE_IN: number = +(process.env.JWT_EXPIRE_IN || 604800000); // 5 days
+
+export const TWITCH_CLIENT_ID: string     = process.env.TWITCH_CLIENT_ID!;
+export const TWITCH_CLIENT_SECRET: string = process.env.TWITCH_CLIENT_SECRET!;
+
+export const TWITCH_REDIRECT_URI  = `${FRONTEND_BASE_URI}/confirm-twitch-login`;
