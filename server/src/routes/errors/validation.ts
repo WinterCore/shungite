@@ -7,11 +7,11 @@ class ValidationError extends RoutingError {
     }
 
     get status(): number {
-        return 403;
+        return 422;
     }
 
     get message(): string {
-        return "You're not allowed to be here!";
+        return "The given data was invalid";
     }
 }
 
