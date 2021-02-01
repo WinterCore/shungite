@@ -1,7 +1,8 @@
-import * as Express from "express";
-import * as Morgan  from "morgan";
-import * as Helmet  from "helmet";
-import * as Path    from "path";
+import * as Express    from "express";
+import * as Morgan     from "morgan";
+import * as Helmet     from "helmet";
+import * as Path       from "path";
+import * as BodyParser from "body-parser";
 
 import ErrorHandler from "./errors/index";
 import Logger from "../logger";
@@ -16,6 +17,7 @@ app.use(Helmet());
 app.set("trust proxy", 1);
 app.use(Morgan("tiny"));
 app.use(Express.static(Path.resolve("./public")));
+app.use(BodyParser.json());
 app.use("/v1", API);
 
 app.use(ErrorHandler);
