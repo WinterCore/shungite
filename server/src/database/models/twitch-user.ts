@@ -6,7 +6,10 @@ const TwitchUserSchema: Mongoose.Schema = new Mongoose.Schema({
     name          : { type: String, required: true },
     email         : { type: String, unique: true, required: true },
     picture       : { type: String, required: true },
-    channelEmotes : [{ type: Mongoose.Schema.Types.ObjectId, ref: "emote" }],
+    channelEmotes : {
+        type    : [{ type: Mongoose.Schema.Types.ObjectId, ref: "emote" }],
+        default : [],
+    },
 });
 
 export type TwitchUser = {
