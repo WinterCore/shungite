@@ -1,10 +1,11 @@
 import { createLogger, transports, format } from "winston";
 import { resolve } from "path";
 
-const { combine, timestamp, printf } = format;
+const { combine, timestamp, splat, printf } = format;
 
 const logger = createLogger({
     format : combine(
+        splat(),
         timestamp(),
         printf(({ message, timestamp, level, stack }) => {
             if (stack) {
