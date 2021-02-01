@@ -21,6 +21,6 @@ export type Token = {
     ip      : string;
 };
 
-export type TokenDoc = Mongoose.Document<Token>;
+export type TokenDoc = Mongoose.Document & Token;
 
 export default Mongoose.model<TokenDoc>("token", TokenSchema);

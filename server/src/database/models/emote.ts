@@ -11,9 +11,10 @@ const EmoteSchema: Mongoose.Schema = new Mongoose.Schema({
         required : true,
     },
     owner : {
-        type  : Mongoose.Schema.Types.ObjectId,
-        ref   : "user",
-        index : true
+        type     : Mongoose.Schema.Types.ObjectId,
+        ref      : "user",
+        required : true,
+        index    : true
     },
 });
 
@@ -23,6 +24,6 @@ export type Emote = {
     owner   : TwitchUser | string;
 };
 
-export type EmoteDoc = Mongoose.Document<Emote>
+export type EmoteDoc = Mongoose.Document & Emote;
 
 export default Mongoose.model<EmoteDoc>("emote", EmoteSchema);
