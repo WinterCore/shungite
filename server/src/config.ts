@@ -1,3 +1,5 @@
+import * as Path from "path";
+
 const DB_HOST = process.env.DB_HOST || "127.0.0.1";
 const DB_PORT = process.env.DB_PORT || 27017;
 const DB_NAME = process.env.DB_NAME || "bbttv";
@@ -19,3 +21,14 @@ export const TWITCH_CLIENT_ID: string     = process.env.TWITCH_CLIENT_ID!;
 export const TWITCH_CLIENT_SECRET: string = process.env.TWITCH_CLIENT_SECRET!;
 
 export const TWITCH_REDIRECT_URI  = `${FRONTEND_BASE_URI}/confirm-twitch-login`;
+
+export const EMOTE_DIRECTORY = Path.resolve(process.cwd(), "storage/emotes");
+
+export type EmoteSize = "x1" | "x2" | "x3";
+export type EmoteSizeObj<T> = { [key in EmoteSize] ?: T };
+
+export const GIF_SIZES: EmoteSizeObj<number> = {
+    x1: 28,
+    x2: 56,
+    x3: 112,
+};
