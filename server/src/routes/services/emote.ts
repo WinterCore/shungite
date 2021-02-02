@@ -7,7 +7,7 @@ import { promises as FSP, createWriteStream } from "fs";
 
 const gifsicle: string = require("gifsicle");
 
-import { EMOTE_DIRECTORY, GIF_SIZES, EmoteSizeObj, EmoteSize } from "../../config";
+import { EMOTE_DIRECTORY, EMOTE_SIZES, EmoteSizeObj, EmoteSize } from "../../config";
 
 import { EmoteType } from "../../database/models/emote";
 
@@ -17,9 +17,9 @@ export const createMultisizeGifEmote = async (buffer: Buffer): Promise<EmoteSize
     const { path: source, cleanup: cleanupSource } = await file();
     let paths: EmoteSizeObj<string> = {};
     await FSP.writeFile(source, buffer);
-    for (let size of Object.keys(GIF_SIZES) as EmoteSize[]) {
+    for (let size of Object.keys(EMOTE_SIZES) as EmoteSize[]) {
         const { path } = await file();
-        const w = GIF_SIZES[size];
+        const w = EMOTE_SIZES[size];
         await execFile(gifsicle, ["-o", path, "--resize", `${w}x${w}`, "--lossy=100", "--colors=100", source]);
         paths[size] = path;
     }
@@ -31,10 +31,10 @@ export const createMultisizeGifEmote = async (buffer: Buffer): Promise<EmoteSize
 export const createMultisizePngEmote = async (buffer: Buffer): Promise<EmoteSizeObj<string>> => {
     let paths: EmoteSizeObj<string> = {};
 
-    await Object.keys(GIF_SIZES).reduce((prev, size) => (
+    await Object.keys(EMOTE_SIZES).reduce((prev, size) => (
         prev.then(() => new Promise(async (resolve, reject) => {
             const { path } = await file();
-            const w = GIF_SIZES[size as EmoteSize];
+            const w = EMOTE_SIZES[size as EmoteSize];
             const writeStream = createWriteStream(path);
             const stream = Sharp(buffer)
                 .resize(w, w)

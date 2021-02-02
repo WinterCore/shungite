@@ -8,7 +8,8 @@ import * as Cors       from "cors";
 import ErrorHandler from "./errors/index";
 import Logger from "../logger";
 
-import API from "./api/index";
+import API   from "./api/index";
+import Emote from "./emote";
 
 import { CORS_WHITELIST, PORT } from "../config";
 
@@ -29,6 +30,7 @@ app.use(Morgan("tiny"));
 app.use(Express.static(Path.resolve("./public")));
 app.use(BodyParser.json());
 app.use("/v1", API);
+app.use("/emote", Emote);
 
 app.use(ErrorHandler);
 

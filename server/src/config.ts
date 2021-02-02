@@ -29,7 +29,7 @@ export const CORS_WHITELIST = ["https://www.twitch.tv", "https://twitch.tv", "ht
 export type EmoteSize = "x1" | "x2" | "x3";
 export type EmoteSizeObj<T> = { [key in EmoteSize] ?: T };
 
-export const GIF_SIZES: EmoteSizeObj<number> = {
+export const EMOTE_SIZES: EmoteSizeObj<number> = {
     x1: 28,
     x2: 56,
     x3: 112,
