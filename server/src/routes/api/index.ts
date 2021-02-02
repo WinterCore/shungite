@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import Auth   from "./auth";
 import Emotes from "./emotes";
+import Users  from "./users";
 
 import authMiddleware from "../middleware/auth";
 
@@ -9,6 +10,7 @@ const router = Router();
 
 router.use("/auth",  Auth);
 router.use("/emotes", authMiddleware, Emotes);
+router.use("/users", authMiddleware, Users);
 
 router.use((_, res) => {
     res.status(404);
