@@ -4,7 +4,6 @@ import * as UserAgent from "useragent";
 import TwitchUser from "../../database/models/twitch-user";
 import Token      from "../../database/models/token";
 
-
 import { co }            from "../helpers";
 import { twitchAuth }    from "../middleware/validation/auth";
 
@@ -40,7 +39,7 @@ router.post("/twitch", twitchAuth, co(async (req, res) => {
         { upsert: true, setDefaultsOnInsert: true, new: true },
     ))!;
 
-    const jwtToken = await JWT.encrypt({ id: 'test' });
+    const jwtToken = await JWT.encrypt({ id: user._id });
 
     const agent = UserAgent.parse(req.headers["user-agent"]);
     await Token.create({
