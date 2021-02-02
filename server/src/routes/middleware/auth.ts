@@ -12,13 +12,16 @@ const auth: RequestHandler = async (req, _, next) => {
     if (!token) return next(new Unauthenticated());
 
     try {
-        const exists = await Token.countDocuments({ token, active: true });
-        if (exists === 0) return next(new Unauthenticated());
+        const count = await Token.countDocuments({ token, active: true });
+        if (count === 0) return next(new Unauthenticated());
 
-        const data = await decrypt(token);
-        if (!data) return next(new Unauthenticated());
-
-        req.user = await TwitchUser.findById(data.id);
+        try {
+            const data = await decrypt(token);
+            req.user = await TwitchUser.findById(data.id);
+            next();
+        } catch (e) {
+            return next(new Unauthenticated());
+        }
     } catch (e) {
         next(e);
     }
