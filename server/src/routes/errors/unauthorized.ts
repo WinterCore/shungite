@@ -1,12 +1,19 @@
 import RoutingError from "./error";
 
 class UnauthorizedError extends RoutingError {
+    private _message: string;
+
+    constructor(message: string = "You're not allowed to be here!") {
+        super();
+        this._message = message;
+    }
+
     get status(): number {
         return 403;
     }
 
     get message(): string {
-        return "You're not allowed to be here!";
+        return this._message;
     }
 
     toJson() {
