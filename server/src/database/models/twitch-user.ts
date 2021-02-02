@@ -3,13 +3,13 @@ import TwitchUserEmote from "./twitch-user-emote";
 import Emote, { EmoteDoc, EmoteStatus } from "./emote";
 
 export type TwitchUser = {
-    twitchId      : string;
-    username      : string;
-    name          : string;
-    email         : string;
-    picture       : string;
-    publicEmotes  : () => Promise<EmoteDoc[]>;
-    privateEmotes : () => Promise<EmoteDoc[]>;
+    twitchId       : string;
+    username       : string;
+    name           : string;
+    email          : string;
+    picture        : string;
+    publicEmotes   : () => Promise<EmoteDoc[]>;
+    uploadedEmotes : () => Promise<EmoteDoc[]>;
 };
 
 export type TwitchUserDoc = TwitchUser & Mongoose.Document;
@@ -29,7 +29,7 @@ TwitchUserSchema.methods.publicEmotes = async function publicEmotes(this: Twitch
     return Emote.find({ isPrivate: false, status: EmoteStatus.APPROVED, _id: { $in: publicEmotesIds } });
 };
 
-TwitchUserSchema.methods.privateEmotes = async function privateEmotes(this: TwitchUserDoc): Promise<EmoteDoc[]> {
+TwitchUserSchema.methods.uploadedEmotes = async function privateEmotes(this: TwitchUserDoc): Promise<EmoteDoc[]> {
     return Emote.find({ status: EmoteStatus.APPROVED, owner: this._id })
 };
 

@@ -4,11 +4,11 @@ import * as UserAgent from "useragent";
 import TwitchUser from "../../database/models/twitch-user";
 import Token      from "../../database/models/token";
 
-import { co }            from "../helpers";
-import { twitchAuth }    from "../middleware/validation/auth";
+import { co }         from "../helpers";
+import { twitchAuth } from "../middleware/validation/auth";
 
-import * as Twitch from "../services/twitch";
-import * as JWT    from "../services/jwt";
+import * as Twitch  from "../services/twitch";
+import * as JWT     from "../services/jwt";
 import userResource from "./resources/user";
 
 import UnauthenticatedError from "../errors/unauthenticated";
@@ -50,7 +50,7 @@ router.post("/twitch", twitchAuth, co(async (req, res) => {
         ip      : req.headers['x-forwarded-for'] || req.socket.remoteAddress,
     });
 
-    res.json({ data: userResource(user), token: jwtToken });
+    res.json({ data: userResource(req)(user), token: jwtToken });
 }));
 
 export default router;

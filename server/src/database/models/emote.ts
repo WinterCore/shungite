@@ -11,14 +11,15 @@ export enum EmoteStatus {
 };
 
 export type Emote = {
-    keyword   : string;
-    type      : EmoteType;
-    owner     : Mongoose.Types.ObjectId | TwitchUserDoc;
-    status    : EmoteStatus[keyof EmoteStatus];
-    isPrivate : boolean;
-    userCount : number;
-    createdAt : string;
-    updatedAt : string;
+    keyword          : string;
+    type             : EmoteType;
+    owner            : Mongoose.Types.ObjectId | TwitchUserDoc;
+    status           : EmoteStatus[keyof EmoteStatus];
+    isPrivate        : boolean;
+    userCount        : number;
+    createdAt        : string;
+    updatedAt        : string;
+    rejectionReason ?: string;
 };
 
 export type EmoteDoc = Mongoose.Document & Emote;
@@ -50,6 +51,7 @@ const EmoteSchema: Mongoose.Schema<EmoteDoc> = new Mongoose.Schema({
         required : true,
         index    : true
     },
+    rejectionReason : { type: String },
     userCount: { type: Number, default: 1, required: true, index: true },
 }, { timestamps: true });
 

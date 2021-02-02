@@ -14,10 +14,13 @@ router.get("/:username/emotes", co(async (req, res) => {
     if (!user) throw new NotFoundError();
 
     const publicEmotes = await user.publicEmotes();
-    const privateEmotes = await user.privateEmotes();
+    const uploadedEmotes = await user.uploadedEmotes();
 
     res.json({
-        data: [...publicEmotes.map(emoteResource), ...privateEmotes.map(emoteResource)]
+        data: [
+            ...publicEmotes.map(emoteResource(req)),
+            ...uploadedEmotes.map(emoteResource(req)),
+        ],
     });
 }));
 

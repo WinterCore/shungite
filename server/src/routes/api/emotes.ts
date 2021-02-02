@@ -10,7 +10,7 @@ import Logger                 from "../../logger";
 
 import { createEmote, addChannelEmote, deleteChannelEmote } from "../middleware/validation/emotes";
 
-import emoteResource from "./resources/emote";
+import emoteResource, { emoteDetailsResource } from "./resources/emote";
 
 import NotFoundError from "../errors/notfound";
 
@@ -30,7 +30,21 @@ router.get("/", co(async (req, res) => {
         .limit(EMOTES_PER_PAGE)
         .skip(page * EMOTES_PER_PAGE);
 
-    res.json({ data: emotes.map(emoteResource) });
+    res.json({ data: emotes.map(emoteResource(req)) });
+}));
+
+router.get("/own", co(async (req, res) => {
+    const user = req.user!;
+
+    const publicEmotes  = await user.publicEmotes();
+    const uploadedEmotes = await user.uploadedEmotes();
+
+    res.json({
+        data: {
+            public_emotes   : publicEmotes.map(emoteResource(req)),
+            uploaded_emotes : uploadedEmotes.map(emoteDetailsResource(req)),
+        }
+    });
 }));
 
 // Create emote
@@ -63,7 +77,7 @@ router.get("/:id", co(async (req, res) => {
     const emote = await Emote.findById(id).populate("owner");
     if (!emote) throw new NotFoundError();
 
-    res.json({ data: emoteResource(emote) });
+    res.json({ data: emoteDetailsResource(req)(emote) });
 }));
 
 // Add emote to channel emotes
