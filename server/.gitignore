@@ -2,3 +2,7 @@ node_modules
 dist
 logs/*
 !logs/.keep
+storage/*
+!storage/emotes
+storage/emotes/*
+!storage/emotes/.keep
