@@ -8,6 +8,7 @@ const TwitchUserSchema: Mongoose.Schema = new Mongoose.Schema({
     picture       : { type: String, required: true },
     channelEmotes : {
         type    : [{ type: Mongoose.Schema.Types.ObjectId, ref: "emote" }],
+        index   : true,
         default : [],
     },
 });
