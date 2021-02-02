@@ -8,7 +8,7 @@ export const twitchAuth: RequestHandler = (req, _, next) => {
 
     let errors: ValidationErrorsObj = {};
     if (!code || !Validator.isLength(code, { min: 30, max: 30 })) {
-        errors["code"] = ["The code must be a 30 character string."];
+        errors["code"] = "The code must be a 30 character string.";
     }
 
     if (Object.keys(errors).length) {

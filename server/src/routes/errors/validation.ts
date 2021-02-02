@@ -1,7 +1,7 @@
 import RoutingError, { BasicErrorResponse } from "./error";
 
 export type ValidationErrorsObj = {
-    [key: string]: string[];
+    [key: string]: string;
 };
 
 export type ValidationErrorResponse = BasicErrorResponse & {
