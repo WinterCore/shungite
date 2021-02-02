@@ -1,17 +1,39 @@
 import * as Mongoose from "mongoose";
 
-import { TwitchUser } from "./twitch-user";
+import { TwitchUserDoc } from "./twitch-user";
 
-const EmoteSchema: Mongoose.Schema = new Mongoose.Schema({
+export type EmoteType = "gif" | "image";
+
+export enum EmoteStatus {
+    PENDING  = "pending",
+    APPROVED = "approved",
+    REJECTED = "rejected",
+};
+
+export type Emote = {
+    keyword   : string;
+    type      : EmoteType;
+    owner     : Mongoose.Types.ObjectId | TwitchUserDoc;
+    status    : EmoteStatus[keyof EmoteStatus];
+    isPrivate : boolean;
+    userCount : number;
+    createdAt : string;
+    updatedAt : string;
+};
+
+export type EmoteDoc = Mongoose.Document & Emote;
+
+const EmoteSchema: Mongoose.Schema<EmoteDoc> = new Mongoose.Schema({
     keyword: {
         type: String,
         unique: true,
-        required: true
+        required: true,
     },
     status: {
         type    : String,
-        enum    : ["pending", "approved", "rejected"],
-        default : "pending",
+        enum    : [EmoteStatus.APPROVED, EmoteStatus.REJECTED, EmoteStatus.PENDING],
+        default : EmoteStatus.APPROVED,
+        index   : true,
     },
     type: {
         type     : String,
@@ -28,19 +50,9 @@ const EmoteSchema: Mongoose.Schema = new Mongoose.Schema({
         required : true,
         index    : true
     },
-    timestamps : {},
-});
+    userCount: { type: Number, default: 1, required: true, index: true },
+}, { timestamps: true });
 
-export type EmoteType = "gif" | "image";
+const Emote = Mongoose.model<EmoteDoc>("emote", EmoteSchema);
 
-export type Emote = {
-    keyword   : string;
-    type      : EmoteType;
-    owner     : TwitchUser | string;
-    status    : "pending" | "approved" | "rejected";
-    isPrivate : boolean;
-};
-
-export type EmoteDoc = Mongoose.Document & Emote;
-
-export default Mongoose.model<EmoteDoc>("emote", EmoteSchema);
+export default Emote;
