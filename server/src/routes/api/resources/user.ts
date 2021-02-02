@@ -1,6 +1,8 @@
 import { TwitchUserDoc } from "../../../database/models/twitch-user";
 
-const userResource = (user: TwitchUserDoc) => ({
+import { clean } from "./helpers";
+
+const userResource = (user: TwitchUserDoc) => clean({
     id       : user._id,
     username : user.username,
     name     : user.name,
