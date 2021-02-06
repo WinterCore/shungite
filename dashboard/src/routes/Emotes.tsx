@@ -1,8 +1,10 @@
 import React from "react";
 
+import EmotesResource from "../components/EmotesResource";
+
 const Emotes: React.FC<EmotesProps> = () => {
     return (
-        <h1>Emotes</h1>
+        <EmotesResource />
     );
 };
 

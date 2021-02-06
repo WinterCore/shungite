@@ -1,5 +1,7 @@
 import React from "react";
+import { useLocation } from "react-router";
 import classnames from "classnames";
+import { Link } from "react-router-dom";
 import { Button, Typography, Space, Menu, Dropdown } from "antd";
 
 import { DownOutlined } from '@ant-design/icons';
@@ -10,8 +12,8 @@ import { TWITCH_AUTH_URL } from "../config";
 
 import { useUser } from "../contexts/user";
 
-import styles from "./Header.module.css";
-import utilStyles from "../util.module.css";
+import s from "./Header.module.css";
+import us from "../util.module.css";
 
 const UserActionsMenu = ({ logout }: { logout: () => void }) => {
     return (
@@ -41,10 +43,10 @@ const UserCard: React.FC = () => {
     }
 
     return (
-        <div className={ classnames(utilStyles.flex, utilStyles.alignCenter) }>
+        <div className={ classnames(us.flex, us.alignCenter) }>
             <Dropdown overlay={ UserActionsMenu({ logout }) }>
                 <Space size="small" style={{ cursor: "pointer" }}>
-                    <img className={ styles.pfp } src={ user.picture } />
+                    <img alt={ user.name } className={ s.pfp } src={ user.picture } />
                     <Typography.Text>{ user.name }</Typography.Text>
                     <DownOutlined />
                 </Space>
@@ -53,16 +55,37 @@ const UserCard: React.FC = () => {
     );
 };
 
+const links = [
+    { path: "/", text: "Home", exact: true },
+    { path: "/emotes", text: "Emotes", exact: false },
+    { path: "/dashboard", text: "Dashboard", exact: false },
+];
+
 const Header: React.FC<HeaderProps> = () => {
+    const { pathname } = useLocation();
 
     return (
         <header>
-            <div>
-                <div className={ styles.logo }>Shungite</div>
+            <div className={ classnames(us.flex) }>
+                <div className={ s.logo }>Shungite</div>
+                <nav>
+                    {
+                        links.map(({ path, text, exact }) => {
+                            const active = exact ? path === pathname : pathname.startsWith(path);
+                            return (
+                                <Link
+                                    key={ path }
+                                    className={ classnames(s.navLink, { [s.active]: active }) }
+                                    to={ path }
+                                >
+                                    { text }
+                                </Link>
+                            );
+                        })
+                    }
+                </nav>
             </div>
-            <div>
-                <UserCard />
-            </div>
+            <UserCard />
         </header>
     );
 };

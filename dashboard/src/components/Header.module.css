@@ -1,11 +1,10 @@
 header {
   display: flex;
-  height: 64px;
+  height: var(--header-height);
   z-index: 1;
   position: relative;
   box-shadow: 0 2px 8px #f0f1f2;
   justify-content: space-between;
-  align-items: center;
   padding: 0 20px;
 }
 
@@ -13,4 +12,39 @@ header {
     width: 36px;
     height: 36px;
     border-radius: 50%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+nav {
+    margin-left: 20px;
+    display: flex;
+}
+
+.navLink {
+    margin: 0 12px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: #000;
+}
+.navLink:before {
+    content: "";
+    position: absolute;
+    height: 4px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: background 300ms linear;
+}
+
+.navLink:hover, .navLink.active {
+    color: #40a9ff;
+}
+
+.navLink:hover:before, .navLink.active:before {
+    background: #40a9ff;
 }

@@ -1,7 +1,21 @@
-.flex { display: flex }
-.flex.justifyCenter { justify-content: center }
-.flex.alignCenter { align-items: center }
+.flex { display: flex!important }
+.flex.justifyCenter { justify-content: center!important }
+.flex.alignCenter { align-items: center!important }
+
+section {
+    margin: 20px;
+}
 
 .fullpageContainer {
     min-height: calc(100vh - 64px);
+}
+
+.emotesGrid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.emotesGrid .emoteImage {
+    padding: 20px 20px 0;
 }
