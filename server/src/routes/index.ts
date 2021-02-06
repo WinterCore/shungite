@@ -19,6 +19,9 @@ app.set("trust proxy", 1);
 app.use(Helmet());
 app.use(Cors((req, callback) => {
     const origin = req.header("Origin");
+    if (process.env.NODE_ENV === "development") {
+        return callback(null, { origin: true });
+    }
     if (!origin || CORS_WHITELIST.indexOf(origin) > -1) {
         callback(null, { origin: true });
     } else {
