@@ -1,0 +1,7 @@
+.flex { display: flex }
+.flex.justifyCenter { justify-content: center }
+.flex.alignCenter { align-items: center }
+
+.fullpageContainer {
+    min-height: calc(100vh - 64px);
+}

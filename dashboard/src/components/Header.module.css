@@ -1,0 +1,16 @@
+header {
+  display: flex;
+  height: 64px;
+  z-index: 1;
+  position: relative;
+  box-shadow: 0 2px 8px #f0f1f2;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.pfp {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
