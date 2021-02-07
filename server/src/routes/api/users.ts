@@ -20,12 +20,14 @@ router.get("/:id", authMiddleware, co(async (req, res) => {
     const user = await TwitchUser.findById(id);
     if (!user) throw new NotFoundError();
 
-    const publicEmotes = await user.publicEmotes();
+    const publicEmotes  = await user.publicEmotes();
+    const uploadedEmotes = await user.uploadedEmotes();
 
     res.json({
         data: {
             ...userResource(req)(user),
-            public_emotes: publicEmotes.map(emoteResource(req))
+            public_emotes   : publicEmotes.map(emoteResource(req)),
+            uploaded_emotes : uploadedEmotes.map(emoteResource(req)),
         },
     });
 }));
