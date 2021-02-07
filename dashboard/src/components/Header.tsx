@@ -30,15 +30,17 @@ const UserCard: React.FC = () => {
 
     if (!user) {
         return (
-            <Button
-                type="primary"
-                icon={ <span className="anticon"><TwitchIcon /></span> }
-                size="large"
-                style={{ background: "#9147FF", borderColor: "#9147FF" }}
-                onClick={() => window.location.href = TWITCH_AUTH_URL}
-            >
-                Login
-            </Button>
+            <div className={ classnames(us.flex, us.alignCenter) }>
+                <Button
+                    type="primary"
+                    icon={ <span className="anticon"><TwitchIcon /></span> }
+                    size="large"
+                    style={{ background: "#9147FF", borderColor: "#9147FF" }}
+                    onClick={() => window.location.href = TWITCH_AUTH_URL}
+                >
+                    Login
+                </Button>
+            </div>
         );
     }
 

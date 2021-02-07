@@ -2,16 +2,17 @@ import React from "react";
 import classnames from "classnames";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router";
-import { AxiosResponse } from "axios";
 import { Select, Space, Row, Col } from "antd";
 
-import Api, { GET_EMOTES } from "../api/index";
+import { GET_EMOTES } from "../api/index";
 import { EmoteSnippet } from "../api/models";
 
 import { GetEmotesResponse } from "../api/responses";
 import ApiResourceRenderer from "./ResourceRenderer";
 
 import EmoteCard from "./EmoteCard";
+
+import useApi from "../hooks/api";
 
 import us from "../util.module.css";
 
@@ -51,28 +52,10 @@ const Filter: React.FC = () => {
 };
 
 const EmotesResource: React.FC<EmotesResourceProps> = () => {
-    const [data, setData] = React.useState<EmoteSnippet[] | null>(null);
-    const [isLoading, setIsLoading] = React.useState<boolean>(true);
-    const [error, setError] = React.useState<string | null>(null);
     const location = useLocation();
     const sort = queryString.parse(location.search).sort?.toString() || undefined;
-
-    React.useEffect(() => {
-        const fetchEmotes = async () => {
-            setIsLoading(true);
-            const { data }: AxiosResponse<GetEmotesResponse> = await Api({
-                ...GET_EMOTES(),
-                params: { sort }
-            });
-            setData(data.data);
-            setIsLoading(false);
-        };
-
-        fetchEmotes().catch(() => {
-            setError("Something happened!");
-            setIsLoading(false);
-        });
-    }, [sort]);
+    const rConfig = { ...GET_EMOTES(), params: { sort } };
+    const { data, error, isLoading } = useApi<GetEmotesResponse>(rConfig, [sort]);
 
     return (
         <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -80,8 +63,8 @@ const EmotesResource: React.FC<EmotesResourceProps> = () => {
             <ApiResourceRenderer
                 isLoading={ isLoading }
                 error={ error }
-                empty={ !!data && data.length === 0 }
-                render={ () => <Emotes emotes={ data! } /> }
+                empty={ !!data && data.data.length === 0 }
+                render={ () => <Emotes emotes={ data!.data } /> }
             />
         </Space>
     );

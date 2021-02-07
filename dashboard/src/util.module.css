@@ -19,3 +19,12 @@ section {
 .emotesGrid .emoteImage {
     padding: 20px 20px 0;
 }
+
+.responsiveContainer {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.textCenter {
+    text-align: center;
+}

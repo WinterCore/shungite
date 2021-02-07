@@ -19,5 +19,6 @@ export const TWITCH_AUTH_URL = "https://id.twitch.tv/oauth2/authorize?" + queryS
     client_id     : TWITCH_CLIENT_ID,
     redirect_uri  : TWITCH_LOGIN_REDIRECT_URI,
     response_type : TWITCH_LOGIN_RESPONSE_TYPE,
-    scope         : TWITCH_LOGIN_SCOPES
+    scope         : TWITCH_LOGIN_SCOPES,
+    force_verify  : true,
 });

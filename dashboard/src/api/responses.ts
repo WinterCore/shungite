@@ -1,5 +1,8 @@
-import { User, EmoteSnippet } from "./models";
+import { User, EmoteSnippet, Emote } from "./models";
 
+export interface SuccessResponse {
+    message: string;
+}
 
 export interface LoginResponse {
     data  : User;
@@ -7,5 +10,9 @@ export interface LoginResponse {
 }
 
 export interface GetEmotesResponse {
-    data : EmoteSnippet[];
+    data: EmoteSnippet[];
+}
+
+export interface GetEmoteDetailsResponse {
+    data: Emote;
 }
