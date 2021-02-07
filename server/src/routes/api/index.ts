@@ -5,13 +5,11 @@ import Emotes   from "./emotes";
 import Users    from "./users";
 import Channels from "./channels";
 
-import authMiddleware from "../middleware/auth";
-
 const router = Router();
 
 router.use("/auth",  Auth);
-router.use("/emotes", authMiddleware, Emotes);
-router.use("/users", authMiddleware, Users);
+router.use("/emotes", Emotes);
+router.use("/users", Users);
 
 // Extension specific endpoints
 router.use("/channels", Channels);

@@ -7,12 +7,13 @@ import TwitchUser   from "../../database/models/twitch-user";
 import userResource from "./resources/user";
 
 import emoteResource from "./resources/emote";
+import authMiddleware from "../middleware/auth";
 
 import NotFoundError from "../errors/notfound";
 
 const router = Router();
 
-router.get("/:id", co(async (req, res) => {
+router.get("/:id", authMiddleware, co(async (req, res) => {
     const { id } = req.params;
     if (!Validator.isMongoId(id)) throw new NotFoundError();
 

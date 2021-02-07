@@ -8,6 +8,8 @@ import { processEmote }       from "../services/emote";
 import { co, getSortValue }   from "../helpers";
 import Logger                 from "../../logger";
 
+import authMiddleware, { populateUser } from "../middleware/auth";
+
 import { createEmote, addChannelEmote, deleteChannelEmote } from "../middleware/validation/emotes";
 
 import emoteResource, { emoteDetailsResource } from "./resources/emote";
@@ -33,7 +35,7 @@ router.get("/", co(async (req, res) => {
     res.json({ data: emotes.map(emoteResource(req)) });
 }));
 
-router.get("/own", co(async (req, res) => {
+router.get("/own", authMiddleware, co(async (req, res) => {
     const user = req.user!;
 
     const publicEmotes  = await user.publicEmotes();
@@ -48,7 +50,7 @@ router.get("/own", co(async (req, res) => {
 }));
 
 // Create emote
-router.post("/", emoteUploader, createEmote, co(async (req, res) => {
+router.post("/", authMiddleware, emoteUploader, createEmote, co(async (req, res) => {
     const t = req.file.originalname.endsWith("gif") ? "gif" : "image"
 
     const { keyword, is_private } = req.body
@@ -70,7 +72,7 @@ router.post("/", emoteUploader, createEmote, co(async (req, res) => {
 }));
 
 // Get emote details
-router.get("/:id", co(async (req, res) => {
+router.get("/:id", populateUser, co(async (req, res) => {
     const { id } = req.params;
     if (!Validator.isMongoId(id)) throw new NotFoundError();
 
@@ -83,7 +85,7 @@ router.get("/:id", co(async (req, res) => {
 }));
 
 // Add emote to channel emotes
-router.post("/:id/own", addChannelEmote, co(async (req, res) => {
+router.post("/:id/own", authMiddleware, addChannelEmote, co(async (req, res) => {
     const { id }          = req.params;
     const { _id: userId } = req.user!;
 
@@ -96,7 +98,7 @@ router.post("/:id/own", addChannelEmote, co(async (req, res) => {
 }));
 
 // Add emote to channel emotes
-router.delete("/:id/own", deleteChannelEmote, co(async (req, res) => {
+router.delete("/:id/own", authMiddleware, deleteChannelEmote, co(async (req, res) => {
     const { id }          = req.params;
     const { _id: userId } = req.user!;
 
