@@ -1,6 +1,7 @@
 import * as Mongoose from "mongoose";
 
 import { TwitchUserDoc } from "./twitch-user";
+import TwitchUserEmote from "./twitch-user-emote";
 
 export type EmoteType = "gif" | "image";
 
@@ -20,6 +21,8 @@ export type Emote = {
     createdAt        : string;
     updatedAt        : string;
     rejectionReason ?: string;
+    isAdded          : (userId: string) => Promise<boolean>;
+    added           ?: boolean;
 };
 
 export type EmoteDoc = Mongoose.Document & Emote;
@@ -54,6 +57,11 @@ const EmoteSchema: Mongoose.Schema<EmoteDoc> = new Mongoose.Schema({
     rejectionReason : { type: String },
     userCount: { type: Number, default: 1, required: true, index: true },
 }, { timestamps: true });
+
+EmoteSchema.methods.isAdded = async function isAdded(userId: string): Promise<boolean> {
+    console.log(this._id, userId);
+    return await TwitchUserEmote.countDocuments({ emote: this._id, user: userId }) > 0;
+};
 
 const Emote = Mongoose.model<EmoteDoc>("emote", EmoteSchema);
 

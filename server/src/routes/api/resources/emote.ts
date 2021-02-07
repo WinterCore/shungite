@@ -18,17 +18,18 @@ const emoteResource: ApiResource<EmoteDoc> = (req) => (emote) => clean({
 
 export const emoteDetailsResource: ApiResource<EmoteDoc> = (req) => (emote) => {
     const owner = emote.owner as TwitchUserDoc;
-    if (!owner._id.equals(req.user!.id)) emoteResource(req)(emote);
-
-    const extraData = {
-        is_private      : emote.isPrivate,
-        status          : emote.status,
-        rejectionReason : emote.status === EmoteStatus.REJECTED ? emote.rejectionReason : undefined,
+    const data: Record<string, any> = {
+        is_private : emote.isPrivate,
+        added      : emote.added,
     };
+    if (req.user && !owner._id.equals(req.user!.id)) {
+        data.status          = emote.status;
+        data.rejectionReason = emote.status === EmoteStatus.REJECTED ? emote.rejectionReason : undefined;
+    }
 
     return {
         ...emoteResource(req)(emote),
-        ...clean(extraData),
+        ...clean(data),
     };
 };
 

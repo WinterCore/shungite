@@ -77,6 +77,8 @@ router.get("/:id", co(async (req, res) => {
     const emote = await Emote.findById(id).populate("owner");
     if (!emote) throw new NotFoundError();
 
+    emote.added = req.user ? await emote.isAdded(req.user._id) : false;
+
     res.json({ data: emoteDetailsResource(req)(emote) });
 }));
 
