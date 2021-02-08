@@ -5,6 +5,7 @@ import Emotes from "./routes/Emotes";
 import Emote from "./routes/Emote";
 import Dashboard from "./routes/Dashboard";
 import ConfirmTwitchLogin from "./routes/ConfirmTwitchLogin";
+import NotFound from "./routes/NotFound";
 
 import Header from "./components/Header";
 
@@ -24,6 +25,7 @@ const App: React.FC = () => {
                         <Route exact path="/emotes/:id" component={ Emote } />
                         <Route exact path="/dashboard" render={ () => <Authenticated component={ Dashboard } /> } />
                         <Route exact path="/confirm-twitch-login" component={ ConfirmTwitchLogin } />
+                        <Route component={ NotFound } />
                     </Switch>
                 </section>
             </UserProvider>
