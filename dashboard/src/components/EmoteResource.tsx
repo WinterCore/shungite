@@ -16,7 +16,7 @@ import { Emote } from "../api/models";
 import { formatDate, getTagColor } from "../util/helpers";
 import { EMOTE_ASSET_URL, EmoteSize } from "../config";
 import { useUser } from "../contexts/user";
-import Api, { ADD_EMOTE, DELETE_EMOTE } from "../api/index";
+import Api, { ADD_EMOTE, DELETE_EMOTE, getResponseError } from "../api/index";
 
 import us from "../util.module.css";
 import { SuccessResponse } from "../api/responses";
@@ -58,9 +58,7 @@ const EmoteActions: React.FC<EmoteProps> = (props) => {
                 notification.success({ message });
                 setLoading(false);
             }).catch((e) => {
-                notification.error({
-                    message: e.response ? e.response.data.message : "Something happened!"
-                });
+                notification.error({ message: getResponseError(e) });
                 setLoading(false);
             });
     };

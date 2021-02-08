@@ -3,9 +3,9 @@ import { AxiosResponse } from "axios";
 import classnames from "classnames";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router";
-import { Select, Space, Row, Col } from "antd";
+import { Select, Space, Row, Col, notification } from "antd";
 
-import { GET_EMOTES } from "../api/index";
+import { getResponseError, GET_EMOTES } from "../api/index";
 import { EmoteSnippet } from "../api/models";
 
 import { GetEmotesResponse } from "../api/responses";
@@ -75,7 +75,8 @@ const EmotesResource: React.FC<EmotesResourceProps> = () => {
             setHasMore(data.data.length === 30);
             setIsLoadingMore(false);
         } catch (e) {
-            setError(e.response ? e.response.message : "Something happened!");
+            setIsLoadingMore(false);
+            notification.error({ message: getResponseError(e) });
         }
     };
 
@@ -93,7 +94,7 @@ const EmotesResource: React.FC<EmotesResourceProps> = () => {
                 setHasMore(data.data.length === 30);
                 setIsLoading(false);
             } catch (e) {
-                setError(e.response ? e.response.message : "Something happened!");
+                setError(getResponseError(e));
             }
         };
         loadData();

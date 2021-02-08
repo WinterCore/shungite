@@ -4,7 +4,7 @@ import { Input, Form, Switch, Upload, Button, notification } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { RuleObject } from "antd/lib/form";
 
-import Api, { EMOTE_CHECK_KEYWORD, CREATE_EMOTE } from "../api/index";
+import Api, { EMOTE_CHECK_KEYWORD, CREATE_EMOTE, getResponseError } from "../api/index";
 import { SuccessResponse } from "../api/responses";
 import { getImageFilePreview } from "../util/helpers";
 
@@ -39,11 +39,8 @@ const EmoteForm: React.FC<EmoteFormProps> = ({ reloadEmotes }) => {
             setPreview(undefined);
             reloadEmotes();
         } catch (e) {
-            console.log(e);
             setLoading(false);
-            notification.error({
-                message: e.response ? e.response.data.message : "Something happened!"
-            });
+            notification.error({ message: getResponseError(e) });
         }
     };
 

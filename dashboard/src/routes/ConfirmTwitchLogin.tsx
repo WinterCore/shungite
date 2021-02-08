@@ -3,7 +3,7 @@ import queryString from "query-string";
 import { AxiosResponse } from "axios";
 import { RouteComponentProps } from "react-router-dom";
 
-import Api, { LOGIN } from "../api/index";
+import Api, { getResponseError, LOGIN } from "../api/index";
 import { LoginResponse } from "../api/responses";
 
 import { Spin, Row, Col, Typography } from "antd";
@@ -11,7 +11,7 @@ import { Spin, Row, Col, Typography } from "antd";
 import { useUser } from "../contexts/user";
 
 const ConfirmTwitchLogin: React.FC<ConfirmTwitchLoginProps> = ({ location, history }) => {
-    const [error, setError] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string | null>(null);
     const { login } = useUser();
 
     React.useEffect(() => {
@@ -24,7 +24,7 @@ const ConfirmTwitchLogin: React.FC<ConfirmTwitchLoginProps> = ({ location, histo
             history.push("/");
         };
 
-        tryLogin().catch(() => setError(true));
+        tryLogin().catch((e) => setError(getResponseError(e)));
     }, [history, location.search, login]);
 
     return (
@@ -32,7 +32,7 @@ const ConfirmTwitchLogin: React.FC<ConfirmTwitchLoginProps> = ({ location, histo
             <Col>
                 {
                     error
-                        ? <Typography.Title level={4} type="danger">Something happened!</Typography.Title>
+                        ? <Typography.Title level={4} type="danger">{ error }</Typography.Title>
                         : <Spin size="large" tip="Confirming your login..." />
                 }
             </Col>

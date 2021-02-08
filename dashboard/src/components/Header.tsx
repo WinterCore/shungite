@@ -20,9 +20,7 @@ import us from "../util.module.css";
 const UserActionsMenu = ({ logout }: { logout: () => void }) => {
     const handleLogout = () => {
         Api(LOGOUT())
-            .then((_: AxiosResponse<SuccessResponse>) => {
-                logout();
-            });
+            .then((_: AxiosResponse<SuccessResponse>) => logout());
     };
 
     return (

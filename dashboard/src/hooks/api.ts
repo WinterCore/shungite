@@ -2,7 +2,7 @@ import React from "react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import Axios from "axios";
 
-import Api from "../api/index";
+import Api, { getResponseError } from "../api/index";
 
 function useApi<T>(config: AxiosRequestConfig, deps: any[] = [], disableLoadingOnReload: boolean = false):
     { data: T | null, isLoading: boolean, error: string | null, reload: () => void }
@@ -25,7 +25,7 @@ function useApi<T>(config: AxiosRequestConfig, deps: any[] = [], disableLoadingO
             })
             .catch((err) => {
                 if (err.message !== "CANCELED") {
-                    setError(err.response ? err.response.data.message : "Something happened!");
+                    setError(getResponseError(err));
                     setIsLoading(false);
                 }
             });

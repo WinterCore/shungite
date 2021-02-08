@@ -4,6 +4,11 @@ export interface SuccessResponse {
     message: string;
 }
 
+export interface ErrorResponse {
+    message  : string;
+    errors  ?: { [key: string]: string };
+}
+
 export interface LoginResponse {
     data  : User;
     token : string;
