@@ -20,7 +20,7 @@ const router = Router();
 
 const emoteUploader = Multer().single("emote")
 
-const EMOTES_PER_PAGE = 20;
+const EMOTES_PER_PAGE = 30;
 
 router.get("/", co(async (req, res) => {
     const page = +(req.query.page || "1") - 1; // Starts from 0
@@ -33,6 +33,15 @@ router.get("/", co(async (req, res) => {
         .skip(page * EMOTES_PER_PAGE);
 
     res.json({ data: emotes.map(emoteResource(req)) });
+}));
+
+router.get("/keyword/check", authMiddleware, co(async (req, res) => {
+    if (!req.query.keyword) {
+        res.json(false);
+    } else {
+        const count = await Emote.countDocuments({ keyword: req.query.keyword.toString() });
+        res.json(count === 0);
+    }
 }));
 
 router.get("/own", authMiddleware, co(async (req, res) => {
