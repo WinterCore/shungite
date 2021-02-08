@@ -25,7 +25,7 @@ const ConfirmTwitchLogin: React.FC<ConfirmTwitchLoginProps> = ({ location, histo
         };
 
         tryLogin().catch(() => setError(true));
-    }, []);
+    }, [history, location.search, login]);
 
     return (
         <Row justify="center" style={{ margin: "50px 0" }}>

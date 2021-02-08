@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = () => {
     return (
         <header>
             <div className={ classnames(us.flex) }>
-                <div className={ s.logo }><img src="/logo.png" /></div>
+                <div className={ s.logo }><img src="/logo.png" alt="Logo" /></div>
                 <nav>
                     {
                         links.map(({ path, text, exact, auth }) => {

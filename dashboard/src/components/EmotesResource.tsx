@@ -64,24 +64,7 @@ const EmotesResource: React.FC<EmotesResourceProps> = () => {
     const sort = queryString.parse(location.search).sort?.toString() || undefined;
     const containerRef = React.useRef<HTMLDivElement>(null);
 
-    const loadData = async () => {
-        const rConfig = { ...GET_EMOTES(), params: { sort, page } };
-        setIsLoading(true);
-
-        try {
-            const { data }: AxiosResponse<GetEmotesResponse> = await Api(rConfig);
-
-            setData(data.data);
-            setHasMore(data.data.length === 30);
-            setIsLoading(false);
-        } catch (e) {
-            setError(e.response ? e.response.message : "Something happened!");
-        }
-    };
-
-
     const loadMoreData = async (page: number) => {
-        console.log(page);
         const rConfig = { ...GET_EMOTES(), params: { sort, page } };
         setIsLoadingMore(true);
 
@@ -96,14 +79,31 @@ const EmotesResource: React.FC<EmotesResourceProps> = () => {
         }
     };
 
-    React.useEffect(() => { loadData(); }, [sort]);
+    React.useEffect(() => {
+        const loadData = async () => {
+            const rConfig = { ...GET_EMOTES(), params: { sort } };
+            setIsLoading(true);
+            setPage(1);
+            setHasMore(true);
+
+            try {
+                const { data }: AxiosResponse<GetEmotesResponse> = await Api(rConfig);
+
+                setData(data.data);
+                setHasMore(data.data.length === 30);
+                setIsLoading(false);
+            } catch (e) {
+                setError(e.response ? e.response.message : "Something happened!");
+            }
+        };
+        loadData();
+    }, [sort]);
 
     const checkLoadMore = () => {
         const container = containerRef.current;
         if (!container) return;
 
         const { height, top } = container.getBoundingClientRect();
-        console.log(hasMore, isLoading, isLoadingMore);
 
         if (
            !isLoading
