@@ -25,7 +25,7 @@ function useApi<T>(config: AxiosRequestConfig, deps: any[] = [], disableLoadingO
             })
             .catch((err) => {
                 if (err.message !== "CANCELED") {
-                    setError("Something happened!");
+                    setError(err.response ? err.response.data.message : "Something happened!");
                     setIsLoading(false);
                 }
             });
