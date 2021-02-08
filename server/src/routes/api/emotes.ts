@@ -1,6 +1,7 @@
-import { Router }  from "express";
-import * as Multer from "multer";
-import Validator   from "validator";
+import { Router }    from "express";
+import * as Mongoose from "mongoose";
+import * as Multer   from "multer";
+import Validator     from "validator";
 
 import Emote, { EmoteStatus } from "../../database/models/emote";
 import TwitchUserEmote        from "../../database/models/twitch-user-emote";
@@ -64,16 +65,20 @@ router.post("/", authMiddleware, emoteUploader, createEmote, co(async (req, res)
 
     const { keyword, is_private } = req.body
 
-    const emote = await Emote.create({
-        isPrivate : is_private,
-        owner     : req.user!._id,
-        type      : t,
-        keyword,
-    });
+    const emoteId = Mongoose.Types.ObjectId();
 
     // TODO: Do this in a job or something, and notify the owner of the results.
-    processEmote(req.file.buffer, t, emote._id.toString())
-        .catch(e => Logger.error("Something happened while processing emote %s %O", emote._id, e));
+    processEmote(req.file.buffer, t, emoteId.toHexString())
+        .then(() => (
+            Emote.create({
+                _id       : emoteId,
+                isPrivate : is_private,
+                owner     : req.user!._id,
+                type      : t,
+                keyword,
+            })
+        ))
+        .catch(e => Logger.error("Something happened while processing emote %s %O", emoteId.toHexString(), e));
 
     res.json({
         message: "Your emote is being processed. It may take up to 5 minutes to show up in your dashboard",

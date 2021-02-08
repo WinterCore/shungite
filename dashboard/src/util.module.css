@@ -1,7 +1,8 @@
 .flex { display: flex!important }
 .flex.justifyCenter { justify-content: center!important }
+.flex.justifyBetween { justify-content: space-between!important }
 .flex.alignCenter { align-items: center!important }
-.flex.column { flex-direction: column }
+.flex.column { flex-direction: column!important }
 
 section {
     margin: 20px;

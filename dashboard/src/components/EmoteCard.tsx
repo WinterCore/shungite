@@ -12,13 +12,18 @@ const EmoteCard: React.FC<EmoteCardProps> = ({ id, keyword }) => {
     const w = EMOTE_SIZES.x3;
     const Img = (
         <div className={ classnames(us.flex, us.justifyCenter, us.emoteImage) }>
-            <img alt={ keyword } src={ EMOTE_ASSET_URL(id, "x3") } style={{ width: w, height: w }} />
+            <img alt={ keyword } src={ EMOTE_ASSET_URL(id, "x3") } style={{ width: w }} />
         </div>
     );
 
     return (
         <Link to={`/emotes/${ id }`}>
-            <Card cover={ Img } hoverable className={ us.emoteCard }>
+            <Card
+                style={{ height: "100%" }}
+                cover={ Img }
+                className={ classnames(us.emoteCard, us.flex, us.column, us.justifyBetween) }
+                hoverable
+            >
                 <Card.Meta style={{ textAlign: "center" }} title={ keyword }>{ keyword }</Card.Meta>
             </Card>
         </Link>
