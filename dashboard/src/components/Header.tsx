@@ -1,12 +1,14 @@
 import React from "react";
+import { AxiosResponse } from "axios";
 import { useLocation } from "react-router";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
 import { Button, Typography, Space, Menu, Dropdown } from "antd";
-
 import { DownOutlined } from '@ant-design/icons';
 
 import TwitchIcon from "../icons/Twitch";
+import Api, { LOGOUT } from "../api/index";
+import { SuccessResponse } from "../api/responses";
 
 import { TWITCH_AUTH_URL } from "../config";
 
@@ -16,9 +18,16 @@ import s from "./Header.module.css";
 import us from "../util.module.css";
 
 const UserActionsMenu = ({ logout }: { logout: () => void }) => {
+    const handleLogout = () => {
+        Api(LOGOUT())
+            .then((_: AxiosResponse<SuccessResponse>) => {
+                logout();
+            });
+    };
+
     return (
         <Menu>
-            <Menu.Item onClick={ logout }>
+            <Menu.Item onClick={ handleLogout }>
                 Logout
             </Menu.Item>
         </Menu>

@@ -1,6 +1,7 @@
 import { AxiosRequestConfig as ARC } from "axios";
 
 export const LOGIN               = (): ARC => ({ method: "POST", url: "/auth/twitch" });
+export const LOGOUT              = (): ARC => ({ method: "POST", url: "/auth/logout" });
 export const GET_EMOTES          = (): ARC => ({ method: "GET", url: "/emotes" });
 export const GET_EMOTE           = (id: string): ARC => ({ method: "GET", url: `/emotes/${id}` });
 export const CREATE_EMOTE        = (): ARC => ({ method: "POST", url: "/emotes" });
