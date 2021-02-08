@@ -21,7 +21,7 @@ const ApiResourceRenderer: React.FC<ApiResourceRendererProps> = ({
                 style={{ textAlign: "center" }}
                 level={4} type="danger"
             >
-                Something happened!
+                { error }
             </Typography.Title>
         );
     }
