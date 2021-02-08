@@ -1,6 +1,6 @@
 
 export type EmoteType = "image" | "gif";
-export type EmoteStatus = "APPROVED" | "PENDING" | "REJECTED";
+export type EmoteStatus = "approved" | "pending" | "rejected";
 
 export interface User {
     id       : string;

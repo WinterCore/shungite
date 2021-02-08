@@ -6,10 +6,8 @@ import "./index.css";
 import "antd/dist/antd.css";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+    <App />,
+    document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

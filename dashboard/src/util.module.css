@@ -1,6 +1,7 @@
 .flex { display: flex!important }
 .flex.justifyCenter { justify-content: center!important }
 .flex.alignCenter { align-items: center!important }
+.flex.column { flex-direction: column }
 
 section {
     margin: 20px;
@@ -23,6 +24,8 @@ section {
 .responsiveContainer {
     width: 100%;
     max-width: 1200px;
+    background: #FFF;
+    padding: 40px 20px;
 }
 
 .textCenter {

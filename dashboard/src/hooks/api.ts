@@ -4,16 +4,19 @@ import Axios from "axios";
 
 import Api from "../api/index";
 
-function useApi<T>(config: AxiosRequestConfig, deps: any[] = []):
-    { data: T | null, isLoading: boolean, error: string | null }
+function useApi<T>(config: AxiosRequestConfig, deps: any[] = [], disableLoadingOnReload: boolean = false):
+    { data: T | null, isLoading: boolean, error: string | null, reload: () => void }
 {
     const [data, setData]           = React.useState<T | null>(null);
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const [error, setError]         = React.useState<string | null>(null);
+    const [random, setRandom]       = React.useState<number>(Math.random());
+
+    const reload = () => setRandom(Math.random());
 
     React.useEffect(() => {
         const cancelTokenSource = Axios.CancelToken.source();
-        setIsLoading(true);
+        if (!disableLoadingOnReload) setIsLoading(true);
         setError(null);
         Api({ ...config, cancelToken : cancelTokenSource.token })
             .then(({ data }: AxiosResponse<T>) => {
@@ -27,9 +30,11 @@ function useApi<T>(config: AxiosRequestConfig, deps: any[] = []):
                 }
             });
         return () => cancelTokenSource.cancel("CANCELED");
-    }, deps);
+    /* eslint-disable react-hooks/exhaustive-deps */
+    }, [...deps, random]);
+    /* eslint-enable react-hooks/exhaustive-deps */
 
-    return { data, isLoading, error };
+    return { data, isLoading, error, reload };
 }
 
 export default useApi;

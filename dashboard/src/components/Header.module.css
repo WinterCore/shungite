@@ -3,9 +3,10 @@ header {
   height: var(--header-height);
   z-index: 1;
   position: relative;
-  box-shadow: 0 2px 8px #f0f1f2;
+  box-shadow: 0 2px 8px #e6e6e6;
   justify-content: space-between;
   padding: 0 20px;
+  background: #FFF;
 }
 
 .pfp {
@@ -17,6 +18,11 @@ header {
 .logo {
     display: flex;
     align-items: center;
+}
+
+.logo img {
+    width: 44px;
+    height: 36px;
 }
 
 nav {

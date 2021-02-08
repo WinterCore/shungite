@@ -58,22 +58,25 @@ const UserCard: React.FC = () => {
 };
 
 const links = [
-    { path: "/", text: "Home", exact: true },
-    { path: "/emotes", text: "Emotes", exact: false },
-    { path: "/dashboard", text: "Dashboard", exact: false },
+    { path: "/", text: "Home", exact: true, auth: false },
+    { path: "/emotes", text: "Emotes", exact: false, auth: false },
+    { path: "/dashboard", text: "Dashboard", exact: false, auth: true },
 ];
 
 const Header: React.FC<HeaderProps> = () => {
     const { pathname } = useLocation();
+    const { user } = useUser();
 
     return (
         <header>
             <div className={ classnames(us.flex) }>
-                <div className={ s.logo }>Shungite</div>
+                <div className={ s.logo }><img src="/logo.png" /></div>
                 <nav>
                     {
-                        links.map(({ path, text, exact }) => {
+                        links.map(({ path, text, exact, auth }) => {
                             const active = exact ? path === pathname : pathname.startsWith(path);
+                            if (auth && !user) return null;
+
                             return (
                                 <Link
                                     key={ path }

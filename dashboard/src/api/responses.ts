@@ -16,3 +16,10 @@ export interface GetEmotesResponse {
 export interface GetEmoteDetailsResponse {
     data: Emote;
 }
+
+export interface GetUserResponse {
+    data: User & {
+        uploaded_emotes : EmoteSnippet[];
+        public_emotes   : EmoteSnippet[];
+    };
+}

@@ -1,18 +1,48 @@
 import React from "react";
+import classnames from "classnames";
 import { Link } from "react-router-dom";
 import { AxiosResponse } from "axios";
-import { Row, Col, Typography, Tooltip, Button, notification } from "antd";
-import { UserOutlined, CalendarOutlined, LineChartOutlined, PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import { Row, Col, Typography, Tooltip, Button, notification, Tag } from "antd";
+import {
+    UserOutlined,
+    CalendarOutlined,
+    LineChartOutlined,
+    PlusOutlined,
+    MinusOutlined
+} from "@ant-design/icons";
 
 import { Emote } from "../api/models";
 
-import { formatDate } from "../util/helpers";
+import { formatDate, getTagColor } from "../util/helpers";
 import { EMOTE_ASSET_URL, EmoteSize } from "../config";
 import { useUser } from "../contexts/user";
 import Api, { ADD_EMOTE, DELETE_EMOTE } from "../api/index";
 
 import us from "../util.module.css";
 import { SuccessResponse } from "../api/responses";
+
+const EmoteExtraInfo: React.FC<EmoteProps> = (props) => {
+    const { owner, status, rejectionReason } = props;
+    const { user } = useUser();
+
+    if (!user || user.id !== owner.id) return null;
+
+    return (
+        <div className={ classnames(us.flex, us.alignCenter, us.column) } style={{ marginTop: 30 }}>
+            <Typography.Title level={ 5 } className={ classnames(us.flex, us.alignCenter) }>
+                Status: &nbsp;<Tag color={ getTagColor(status!) }>{ status }</Tag>
+            </Typography.Title>
+            { status === "rejected" && (
+                <>
+                    <Typography.Title level={ 5 }>
+                        Rejection Reason
+                    </Typography.Title>
+                    <Typography.Text>{ rejectionReason }</Typography.Text>
+                </>
+            )}
+        </div>
+    );
+};
 
 const EmoteActions: React.FC<EmoteProps> = (props) => {
     const { user } = useUser();
@@ -66,13 +96,13 @@ const EmoteActions: React.FC<EmoteProps> = (props) => {
 };
 
 const EmoteResource: React.FC<EmoteProps> = (props) => {
-    const { id, keyword, owner, user_count, created_at } = props;
+    const { id, keyword, owner, user_count, is_private, created_at } = props;
 
     return (
         <Row justify="center">
             <Col className={ us.responsiveContainer }>
                 <Typography.Title className={ us.textCenter } level={ 2 }>{ keyword }</Typography.Title>
-                <Typography.Title className={ us.textCenter } level={ 5 }>
+                <Typography.Title className={ classnames(us.flex, us.justifyCenter, us.alignCenter) } level={ 5 }>
                     <Tooltip title="Owner">
                         <UserOutlined />
                         &nbsp;
@@ -90,6 +120,7 @@ const EmoteResource: React.FC<EmoteProps> = (props) => {
                         &nbsp;
                         { user_count.toLocaleString() }
                     </Tooltip>
+                    <Tag style={{ marginLeft: 10 }} color={ is_private ? "red" : "green" }>{ is_private ? "Private" : "Public"}</Tag>
                 </Typography.Title>
                 <Row justify="center" align="middle" style={{ marginTop: 50 }}>
                     {
@@ -100,6 +131,7 @@ const EmoteResource: React.FC<EmoteProps> = (props) => {
                         ))
                     }
                 </Row>
+                <EmoteExtraInfo { ...props } />
                 <EmoteActions { ...props } />
             </Col>
         </Row>

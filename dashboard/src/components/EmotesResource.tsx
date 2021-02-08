@@ -1,4 +1,5 @@
 import React from "react";
+import { AxiosResponse } from "axios";
 import classnames from "classnames";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router";
@@ -9,14 +10,15 @@ import { EmoteSnippet } from "../api/models";
 
 import { GetEmotesResponse } from "../api/responses";
 import ApiResourceRenderer from "./ResourceRenderer";
+import Api from "../api/index";
 
 import EmoteCard from "./EmoteCard";
 
-import useApi from "../hooks/api";
 
 import us from "../util.module.css";
+import Loader from "./Loader";
 
-const Emotes: React.FC<EmotesProps> = ({ emotes }) => {
+export const Emotes: React.FC<EmotesProps> = ({ emotes }) => {
     return (
         <div className={ classnames(us.emotesGrid) }>
             { emotes.map(emote => <EmoteCard key={ emote.id } { ...emote } />) }
@@ -53,20 +55,90 @@ const Filter: React.FC = () => {
 
 const EmotesResource: React.FC<EmotesResourceProps> = () => {
     const location = useLocation();
+    const [page, setPage] = React.useState<number>(1);
+    const [data, setData] = React.useState<EmoteSnippet[] | null>();
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
+    const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string | null>(null);
+    const [hasMore, setHasMore] = React.useState<boolean>(true);
     const sort = queryString.parse(location.search).sort?.toString() || undefined;
-    const rConfig = { ...GET_EMOTES(), params: { sort } };
-    const { data, error, isLoading } = useApi<GetEmotesResponse>(rConfig, [sort]);
+    const containerRef = React.useRef<HTMLDivElement>(null);
+
+    const loadData = async () => {
+        const rConfig = { ...GET_EMOTES(), params: { sort, page } };
+        setIsLoading(true);
+
+        try {
+            const { data }: AxiosResponse<GetEmotesResponse> = await Api(rConfig);
+
+            setData(data.data);
+            setHasMore(data.data.length === 30);
+            setIsLoading(false);
+        } catch (e) {
+            setError(e.response ? e.response.message : "Something happened!");
+        }
+    };
+
+
+    const loadMoreData = async (page: number) => {
+        console.log(page);
+        const rConfig = { ...GET_EMOTES(), params: { sort, page } };
+        setIsLoadingMore(true);
+
+        try {
+            const { data }: AxiosResponse<GetEmotesResponse> = await Api(rConfig);
+
+            setData(oldData => [...oldData!, ...data.data]);
+            setHasMore(data.data.length === 30);
+            setIsLoadingMore(false);
+        } catch (e) {
+            setError(e.response ? e.response.message : "Something happened!");
+        }
+    };
+
+    React.useEffect(() => { loadData(); }, [sort]);
+
+    const checkLoadMore = () => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const { height, top } = container.getBoundingClientRect();
+        console.log(hasMore, isLoading, isLoadingMore);
+
+        if (
+           !isLoading
+           && !isLoadingMore
+           && (window.innerHeight - top) > height - 10
+           && hasMore
+        ) {
+            loadMoreData(page + 1);
+            setPage(page => page + 1);
+        }
+    };
+
+    React.useEffect(() => {
+        window.addEventListener("scroll", checkLoadMore);
+        return () => window.removeEventListener("scroll", checkLoadMore);
+    });
 
     return (
-        <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <Filter />
-            <ApiResourceRenderer
-                isLoading={ isLoading }
-                error={ error }
-                empty={ !!data && data.data.length === 0 }
-                render={ () => <Emotes emotes={ data!.data } /> }
-            />
-        </Space>
+        <div ref={ containerRef } className={ classnames(us.flex, us.justifyCenter) }>
+            <Space
+                className={ classnames(us.responsiveContainer) }
+                direction="vertical"
+                size="large"
+                style={{ width: "100%" }}
+            >
+                <Filter />
+                <ApiResourceRenderer
+                    isLoading={ isLoading || !data }
+                    error={ error }
+                    empty={ !!data && data.length === 0 }
+                    render={ () => <Emotes emotes={ data! } /> }
+                />
+                { isLoadingMore && <Loader /> }
+            </Space>
+        </div>
     );
 };
 
