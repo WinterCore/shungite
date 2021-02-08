@@ -9,7 +9,7 @@ import { decrypt } from "../services/jwt";
 
 const getUserFromToken = async (token: string): Promise<TwitchUserDoc> => {
     const count = await Token.countDocuments({ token, active: true });
-    if (count === 0) throw new Error("Token is blacklisted");
+    if (count === 0) throw new Unauthenticated("Token is blacklisted");
 
     const data = await decrypt(token);
     const user = await TwitchUser.findById(data.id);
