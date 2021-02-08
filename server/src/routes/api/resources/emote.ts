@@ -22,7 +22,7 @@ export const emoteDetailsResource: ApiResource<EmoteDoc> = (req) => (emote) => {
         is_private : emote.isPrivate,
         added      : emote.added,
     };
-    if (req.user && !owner._id.equals(req.user!.id)) {
+    if (req.user && owner._id.equals(req.user!.id)) {
         data.status          = emote.status;
         data.rejectionReason = emote.status === EmoteStatus.REJECTED ? emote.rejectionReason : undefined;
     }
