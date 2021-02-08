@@ -41,7 +41,7 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
 const DashboardRenderer: React.FC = () => {
     const { user } = useUser();
 
-    const { data, error, isLoading, reload } = useApi<GetUserResponse>(GET_USER(user!.id), [], true);
+    const { data, error, isLoading, reload } = useApi<GetUserResponse>(GET_USER(user!.username), [], true);
 
     const handleReload = () => reload();
 
