@@ -53,4 +53,11 @@ router.post("/twitch", twitchAuth, co(async (req, res) => {
     res.json({ data: userResource(req)(user), token: jwtToken });
 }));
 
+router.post("/logout", co(async (req, res) => {
+    const token = (req.header("Authorization") || "").slice("Bearer ".length);
+    await Token.updateOne({ token }, { active: false });
+
+    res.json({ message: "Success" });
+}));
+
 export default router;
