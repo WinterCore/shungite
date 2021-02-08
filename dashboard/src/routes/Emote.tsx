@@ -14,7 +14,6 @@ const Emote: React.FC<EmoteProps> = ({ match: { params } }) => {
     const { id } = params;
     const { data, error, isLoading } = useApi<GetEmoteDetailsResponse>(GET_EMOTE(id));
 
-
     return (
         <ApiResourceRenderer
             isLoading={ isLoading }

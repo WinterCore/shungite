@@ -9,6 +9,11 @@ export interface User {
     picture  : string;
 }
 
+export interface UserDetails extends User {
+    uploaded_emotes : EmoteSnippet[];
+    public_emotes   : EmoteSnippet[];
+}
+
 export interface EmoteSnippet {
     id         : string;
     keyword    : string;

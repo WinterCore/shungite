@@ -106,7 +106,7 @@ const EmoteResource: React.FC<EmoteProps> = (props) => {
                     <Tooltip title="Owner">
                         <UserOutlined />
                         &nbsp;
-                        <Link to="/users/#">{ owner.name }</Link>
+                        <Link to={ `/users/${owner.username}` }>{ owner.name }</Link>
                     </Tooltip>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Tooltip title="Upload Date">

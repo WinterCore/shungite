@@ -1,4 +1,4 @@
-import { User, EmoteSnippet, Emote } from "./models";
+import { User, EmoteSnippet, Emote, UserDetails } from "./models";
 
 export interface SuccessResponse {
     message: string;
@@ -18,8 +18,5 @@ export interface GetEmoteDetailsResponse {
 }
 
 export interface GetUserResponse {
-    data: User & {
-        uploaded_emotes : EmoteSnippet[];
-        public_emotes   : EmoteSnippet[];
-    };
+    data: UserDetails;
 }

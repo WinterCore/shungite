@@ -69,7 +69,7 @@ const EmoteForm: React.FC<EmoteFormProps> = ({ reloadEmotes }) => {
                 name="keyword"
                 label="Keyword"
                 rules={[
-                    { required: true, min: 3, message: "Please enter a keyword (min 3 characters)" },
+                    { required: true, pattern: /^\w{3,}$/, message: "Please enter a keyword (min 3 alphanumeric characters)" },
                     { validator: validateKeyword, validateTrigger: "onSubmit" },
                 ]}
             >
