@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+    "name": "Shungite",
+    "version": "0.1",
+    "description": "Shungite allows you to use custom emotes on Twitch",
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://www.twitch.tv/*"],
+            "js": ["build/build.js"]
+        }
+    ],
+    "permissions": [
+        "*://api.shungite.upperdown.me/*"
+    ]
+}
