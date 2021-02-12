@@ -1,4 +1,5 @@
 import Axios from "axios";
+import escape from "escape-html";
 
 import browserLocationSpy from "../../utils/location-spy";
 
@@ -17,8 +18,6 @@ type ChannelEmotesResponse = {
     };
 };
 
-
-
 let observer: MutationObserver | null = null;
 let emotes: Record<string, Emote> = {};
 
@@ -27,17 +26,12 @@ const SELECTORS = [
     ".video-chat__message-list-wrapper ul",
 ];
 
-const CLASSES = {
-    chatMessage     : ["chat-line__message"],
-    chatMessageText : ["text-fragment"],
-};
+const CHAT_MESSAGE_CLASS = "chat-line__message";
+const CHAT_MESSAGE_TEXT_SELECTORS = [".text-fragment", ".text-fragment > span"];
 
 const filterMessages = (nodes: NodeList): HTMLDivElement[] => (
-    Array.from(nodes).filter((node) => (
-        CLASSES.chatMessage.some(c => (
-            (node as HTMLDivElement).classList.contains(c)
-        ))
-    )) as HTMLDivElement[]
+    Array.from(nodes)
+        .filter((node) => (node as HTMLDivElement).classList.contains(CHAT_MESSAGE_CLASS)) as HTMLDivElement[]
 );
 
 const createEmoteWrapper = (emote: Emote): HTMLSpanElement => {
@@ -49,6 +43,7 @@ const createEmoteWrapper = (emote: Emote): HTMLSpanElement => {
     const emoteImg = document.createElement("img");
     emoteImg.style.margin        = "-0.5rem 0";
     emoteImg.style.verticalAlign = "middle";
+    emoteImg.title               = emote.keyword;
     emoteImg.src                 = EMOTE_URL(emote.id, "x1");
     emoteImg.srcset              = EMOTE_SIZES.map(size => `${EMOTE_URL(emote.id, size)} ${size.split("").reverse().join("")}`).join(", ");
 
@@ -57,14 +52,31 @@ const createEmoteWrapper = (emote: Emote): HTMLSpanElement => {
     return wrapper;
 };
 
-const handleMessageNodeAdded = (node: HTMLDivElement): void => {
-    const textNode = node.querySelector(`.${CLASSES.chatMessageText}`);
-    if (!textNode || !textNode.textContent) return;
+const renderEmotesInNode = (node: Node) => {
+    if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+        const words = node.textContent.split(" ");
+        let modified = false;
+        for (let i = 0; i < words.length; i += 1) {
+            if (emotes[words[i]]) {
+                modified = true;
+                words[i] = createEmoteWrapper(emotes[words[i]]).innerHTML;
+            } else {
+                words[i] = escape(words[i]);
+            }
+        }
+        if (modified) {
+            const newNode = document.createElement("span") as HTMLSpanElement;
+            newNode.innerHTML = words.join(" ");
+            node.parentNode!.replaceChild(newNode, node);
+        }
+    }
+};
 
-    textNode.innerHTML = textNode.textContent
-        .split(" ")
-        .map(word => emotes[word] ? createEmoteWrapper(emotes[word]).innerHTML : word)
-        .join(" ");
+const handleMessageNodeAdded = (node: HTMLDivElement): void => {
+    setTimeout(() => { // setTimeout is used to avoid conflicts with BTTV
+        const nodes = node.querySelectorAll(CHAT_MESSAGE_TEXT_SELECTORS.join(","));
+        nodes.forEach(node => Array.from(node.childNodes).forEach(renderEmotesInNode))
+    });
 };
 
 const handleMutations: MutationCallback = (mutations) => {

@@ -6,6 +6,7 @@
         "strictNullChecks": true,
         "strictFunctionTypes": true,
         "strictPropertyInitialization": true,
+        "allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
         "module": "es6",
         "target": "es6",
