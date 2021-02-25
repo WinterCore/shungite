@@ -1,6 +1,6 @@
 import React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { Row, Col, Typography, Empty, Space } from "antd";
+import { Row, Col, Typography, Empty } from "antd";
 
 import { Emotes } from "../components/EmotesResource";
 import ApiResourceRenderer from "../components/ResourceRenderer";
