@@ -3,6 +3,12 @@
   --primary-color: #722ed1;
 }
 
+html, body {
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

@@ -58,3 +58,17 @@ nav {
 .navLink:hover:before, .navLink.active:before {
     background: var(--primary-color);
 }
+
+nav.mobileNav {
+    display: none!important;
+}
+
+@media (max-width: 768px) {
+    nav.mobileNav {
+        display: flex!important;
+    }
+
+    nav.nav {
+        display: none!important;
+    }
+}

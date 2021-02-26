@@ -8,6 +8,8 @@ import Api, { EMOTE_CHECK_KEYWORD, CREATE_EMOTE, getResponseError } from "../api
 import { SuccessResponse } from "../api/responses";
 import { getImageFilePreview } from "../util/helpers";
 
+import "./EmoteForm.css";
+
 const layout = {
     labelCol   : { span: 6 },
     wrapperCol : { span: 14 },
@@ -92,13 +94,15 @@ const EmoteForm: React.FC<EmoteFormProps> = ({ reloadEmotes }) => {
                     { preview ? <img style={{ maxWidth: "100%", maxHeight: "100%" }} src={ preview } alt="emote" /> : uploadButton }
                 </Upload>
             </Form.Item>
-            <Form.Item wrapperCol={{ span: 12, offset: 6 }} style={{ marginTop: 20 }}>
-                Note: Uploading a non-square image will result in it being cropped.
+            <Form.Item style={{ marginTop: 20 }} label="Note">
+                Only gif files are supported for animated emotes for now.
             </Form.Item>
-            <Form.Item wrapperCol={{ span: 12, offset: 6 }} style={{ marginTop: 20 }}>
-                <Button loading={ loading } type="primary" htmlType="submit" icon={ <PlusOutlined /> }>
-                    { loading ? "Saving" : "Save" }
-                </Button>
+            <Form.Item style={{ marginTop: 20 }} label="Action">
+                <div>
+                    <Button loading={ loading } type="primary" htmlType="submit" icon={ <PlusOutlined /> }>
+                        { loading ? "Saving" : "Save" }
+                    </Button>
+                </div>
             </Form.Item>
         </Form>
     );

@@ -4,6 +4,12 @@
 .flex.alignCenter { align-items: center!important }
 .flex.column { flex-direction: column!important }
 
+@media (max-width: 768px) {
+    .flex.responsive {
+        flex-direction: column!important;
+    }
+}
+
 section {
     margin: 20px;
 }

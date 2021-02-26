@@ -4,7 +4,7 @@ import { useLocation } from "react-router";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
 import { Button, Typography, Space, Menu, Dropdown } from "antd";
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, MenuOutlined } from '@ant-design/icons';
 
 import TwitchIcon from "../icons/Twitch";
 import Api, { LOGOUT } from "../api/index";
@@ -68,6 +68,7 @@ const links = [
     { path: "/", text: "Home", exact: true, auth: false },
     { path: "/emotes", text: "Emotes", exact: false, auth: false },
     { path: "/dashboard", text: "Dashboard", exact: false, auth: true },
+    { path: "https://github.com/WinterCore/shungite/issues", text: "Support", exact: false, auth: false }
 ];
 
 const Header: React.FC<HeaderProps> = () => {
@@ -78,23 +79,50 @@ const Header: React.FC<HeaderProps> = () => {
         <header>
             <div className={ classnames(us.flex) }>
                 <div className={ s.logo }><img src="/logo.png" alt="Logo" /></div>
-                <nav>
+                <nav className={ s.nav }>
                     {
                         links.map(({ path, text, exact, auth }) => {
                             const active = exact ? path === pathname : pathname.startsWith(path);
                             if (auth && !user) return null;
 
                             return (
-                                <Link
-                                    key={ path }
-                                    className={ classnames(s.navLink, { [s.active]: active }) }
-                                    to={ path }
-                                >
-                                    { text }
-                                </Link>
+                                path.startsWith("http")
+                                    ? (
+                                        <a rel="noreferrer" target="_blank" href={ path } key={ path } className={ s.navLink }>{ text }</a>
+                                    ) : (
+                                        <Link
+                                            key={ path }
+                                            className={ classnames(s.navLink, { [s.active]: active }) }
+                                            to={ path }
+                                        >
+                                            { text }
+                                        </Link>
+                                    )
                             );
                         })
                     }
+                </nav>
+                <nav className={ classnames(us.flex, us.alignCenter, s.mobileNav) }>
+                    <Dropdown overlay={(
+                        <Menu>
+                            {
+                                links.map(({ path, text }) => (
+                                    <Menu.Item key={ path }>
+                                        {
+
+                                            path.startsWith("http")
+                                                ? <a rel="noreferrer" target="_blank" href={ path } key={ path }>{ text }</a>
+                                                : <Link to={ path }>{ text }</Link>
+                                        }
+                                    </Menu.Item>
+                                ))
+                            }
+                        </Menu>
+                    )}>
+                        <Button>
+                            <MenuOutlined />
+                        </Button>
+                    </Dropdown>
                 </nav>
             </div>
             <UserCard />
