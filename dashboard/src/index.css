@@ -1,5 +1,6 @@
 :root {
-    --header-height: 64px;
+  --header-height: 64px;
+  --primary-color: #722ed1;
 }
 
 body {

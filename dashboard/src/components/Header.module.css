@@ -3,7 +3,7 @@ header {
   height: var(--header-height);
   z-index: 1;
   position: relative;
-  box-shadow: 0 2px 8px #e6e6e6;
+  box-shadow: 0 2px 8px rgb(47, 47, 47, 10%);
   justify-content: space-between;
   padding: 0 20px;
   background: #FFF;
@@ -35,7 +35,7 @@ nav {
     display: flex;
     align-items: center;
     position: relative;
-    color: #000;
+    color: var(--primary-color);
 }
 .navLink:before {
     content: "";
@@ -48,9 +48,13 @@ nav {
 }
 
 .navLink:hover, .navLink.active {
-    color: #40a9ff;
+    color: var(--primary-color);
+}
+
+.navLink.active {
+    font-weight: bold;
 }
 
 .navLink:hover:before, .navLink.active:before {
-    background: #40a9ff;
+    background: var(--primary-color);
 }
