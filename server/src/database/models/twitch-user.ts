@@ -8,6 +8,7 @@ export type TwitchUser = {
     name           : string;
     email          : string;
     picture        : string;
+    isAdmin        : boolean;
     publicEmotes   : () => Promise<EmoteDoc[]>;
     uploadedEmotes : () => Promise<EmoteDoc[]>;
 };
@@ -20,6 +21,7 @@ const TwitchUserSchema: Mongoose.Schema<TwitchUserDoc> = new Mongoose.Schema({
     name      : { type: String, required: true },
     email     : { type: String, unique: true, required: true },
     picture   : { type: String, required: true },
+    isAdmin   : { type: Boolean, default: false }
 });
 
 TwitchUserSchema.methods.publicEmotes = async function publicEmotes(this: TwitchUserDoc): Promise<EmoteDoc[]> {
