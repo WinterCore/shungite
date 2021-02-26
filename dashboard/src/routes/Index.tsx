@@ -15,7 +15,7 @@ const ExtensionMenu: React.FC = () => {
     return (
         <Menu>
             <Menu.Item icon={ <img alt="firefox" src={ firefoxLogo } /> }>
-                <a href="https://addons.mozilla.org/en-US/firefox/addon/twitch-shungite">Firefox</a>
+                <a target="_blank" href="https://addons.mozilla.org/en-US/firefox/addon/twitch-shungite">Firefox</a>
             </Menu.Item>
         </Menu>
     );
@@ -45,6 +45,7 @@ const Index: React.FC<IndexProps> = () => {
             <div className={ classnames("content", us.flex, us.column, us.alignCenter) }>
                 <img alt="logo" className="logo" src="/logo-white.png"></img>
                 <Typography.Title level={ 1 }>SHUNGITE</Typography.Title>
+                <Typography.Text className="description">Enjoy custom emotes for Twitch.tv</Typography.Text>
                 <Dropdown overlay={ <ExtensionMenu /> }>
                 <Button>
                     Download Extension <DownOutlined />

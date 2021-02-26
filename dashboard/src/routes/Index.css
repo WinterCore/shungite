@@ -21,6 +21,13 @@
 .home .content h1.ant-typography {
     color: #fff;
     font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.home .content .description {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 14px;
 }
 
 .ant-menu.ant-menu-vertical > .ant-menu-item img.ant-menu-item-icon {
