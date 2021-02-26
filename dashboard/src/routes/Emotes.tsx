@@ -4,7 +4,9 @@ import EmotesResource from "../components/EmotesResource";
 
 const Emotes: React.FC<EmotesProps> = () => {
     return (
-        <EmotesResource />
+        <section>
+            <EmotesResource />
+        </section>
     );
 };
 

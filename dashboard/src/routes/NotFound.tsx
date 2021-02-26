@@ -6,7 +6,7 @@ import us from "../util.module.css";
 
 const NotFound: React.FC = () => {
     return (
-        <div className={ classnames(us.flex, us.column, us.alignCenter, us.justifyCenter, us.fullpageContainer) }>
+        <section className={ classnames(us.flex, us.column, us.alignCenter, us.justifyCenter, us.fullpageContainer) }>
             <Typography.Title style={{ fontSize: 80 }} level={ 1 }>
                 404
             </Typography.Title>
@@ -16,7 +16,7 @@ const NotFound: React.FC = () => {
             <Typography.Title level={ 4 }>
                 I don't think you're supposed to be here.
             </Typography.Title>
-        </div>
+        </section>
     );
 };
 

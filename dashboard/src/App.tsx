@@ -19,17 +19,15 @@ const App: React.FC = () => {
         <BrowserRouter>
             <UserProvider>
                 <Header />
-                <section>
-                    <Switch>
-                        <Route exact path="/" component={ Index } />
-                        <Route exact path="/emotes" component={ Emotes } />
-                        <Route exact path="/emotes/:id" component={ Emote } />
-                        <Route exact path="/dashboard" render={ () => <Authenticated component={ Dashboard } /> } />
-                        <Route exact path="/users/:username" component={ Users } />
-                        <Route exact path="/confirm-twitch-login" component={ ConfirmTwitchLogin } />
-                        <Route component={ NotFound } />
-                    </Switch>
-                </section>
+                <Switch>
+                    <Route exact path="/" component={ Index } />
+                    <Route exact path="/emotes" component={ Emotes } />
+                    <Route exact path="/emotes/:id" component={ Emote } />
+                    <Route exact path="/dashboard" render={ () => <Authenticated component={ Dashboard } /> } />
+                    <Route exact path="/users/:username" component={ Users } />
+                    <Route exact path="/confirm-twitch-login" component={ ConfirmTwitchLogin } />
+                    <Route component={ NotFound } />
+                </Switch>
             </UserProvider>
         </BrowserRouter>
     );
