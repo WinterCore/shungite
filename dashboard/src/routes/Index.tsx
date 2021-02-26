@@ -15,7 +15,7 @@ const ExtensionMenu: React.FC = () => {
     return (
         <Menu>
             <Menu.Item icon={ <img alt="firefox" src={ firefoxLogo } /> }>
-                <a target="_blank" href="https://addons.mozilla.org/en-US/firefox/addon/twitch-shungite">Firefox</a>
+                <a target="_blank" rel="noreferrer" href="https://addons.mozilla.org/en-US/firefox/addon/twitch-shungite">Firefox</a>
             </Menu.Item>
         </Menu>
     );
