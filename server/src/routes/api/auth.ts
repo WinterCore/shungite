@@ -9,7 +9,7 @@ import { twitchAuth } from "../middleware/validation/auth";
 
 import * as Twitch  from "../services/twitch";
 import * as JWT     from "../services/jwt";
-import userResource from "./resources/user";
+import { userDetailsResource } from "./resources/user";
 
 import UnauthenticatedError from "../errors/unauthenticated";
 
@@ -50,7 +50,7 @@ router.post("/twitch", twitchAuth, co(async (req, res) => {
         ip      : req.headers['x-forwarded-for'] || req.socket.remoteAddress,
     });
 
-    res.json({ data: userResource(req)(user), token: jwtToken });
+    res.json({ data: userDetailsResource(req)(user), token: jwtToken });
 }));
 
 router.post("/logout", co(async (req, res) => {

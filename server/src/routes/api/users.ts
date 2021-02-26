@@ -3,7 +3,7 @@ import { Router } from "express";
 import { co } from "../helpers";
 
 import TwitchUser   from "../../database/models/twitch-user";
-import userResource from "./resources/user";
+import { userResource } from "./resources/user";
 
 import emoteResource from "./resources/emote";
 

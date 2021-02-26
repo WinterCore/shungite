@@ -3,7 +3,7 @@ import { TwitchUserDoc }         from "../../../database/models/twitch-user";
 
 import { ApiResource } from "./index";
 
-import userResource from "./user";
+import { userResource } from "./user";
 
 import { clean } from "./helpers";
 
