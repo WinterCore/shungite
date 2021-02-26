@@ -20,8 +20,8 @@ export type Emote = {
     userCount        : number;
     createdAt        : string;
     updatedAt        : string;
-    rejectionReason ?: string;
     isAdded          : (userId: string) => Promise<boolean>;
+    rejectionReason ?: string;
     added           ?: boolean;
 };
 
@@ -36,7 +36,7 @@ const EmoteSchema: Mongoose.Schema<EmoteDoc> = new Mongoose.Schema({
     status: {
         type    : String,
         enum    : [EmoteStatus.APPROVED, EmoteStatus.REJECTED, EmoteStatus.PENDING],
-        default : EmoteStatus.APPROVED,
+        default : EmoteStatus.PENDING,
         index   : true,
     },
     type: {

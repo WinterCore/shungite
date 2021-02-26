@@ -7,7 +7,7 @@ import { userResource } from "./user";
 
 import { clean } from "./helpers";
 
-const emoteResource: ApiResource<EmoteDoc> = (req) => (emote) => clean({
+export const emoteResource: ApiResource<EmoteDoc> = (req) => (emote) => clean({
     id         : emote._id,
     keyword    : emote.keyword,
     type       : emote.type,
@@ -22,7 +22,7 @@ export const emoteDetailsResource: ApiResource<EmoteDoc> = (req) => (emote) => {
         is_private : emote.isPrivate,
         added      : emote.added,
     };
-    if (req.user && owner._id.equals(req.user!.id)) {
+    if (req.user && (owner._id.equals(req.user.id) || req.user.isAdmin)) {
         data.status          = emote.status;
         data.rejectionReason = emote.status === EmoteStatus.REJECTED ? emote.rejectionReason : undefined;
     }
@@ -32,5 +32,3 @@ export const emoteDetailsResource: ApiResource<EmoteDoc> = (req) => (emote) => {
         ...clean(data),
     };
 };
-
-export default emoteResource;
