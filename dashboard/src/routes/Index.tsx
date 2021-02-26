@@ -1,15 +1,57 @@
 import React from "react";
 import classnames from "classnames";
+import { Typography, Button, Dropdown, Menu } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 
-import { Typography } from "antd";
+import initTwitchBackgroundRenderer from "../util/twitch-background";
 
 import us from "../util.module.css";
 
-const Index: React.FC<IndexProps> = () => {
+import "./Index.css";
+
+import firefoxLogo from "../icons/firefox.svg";
+
+const ExtensionMenu: React.FC = () => {
     return (
-        <div className={ classnames(us.flex, us.alignCenter, us.justifyCenter, us.fullpageContainer) }>
-            <Typography.Title level={ 2 }>Welcome to Shungite</Typography.Title>
-        </div>
+        <Menu>
+            <Menu.Item icon={ <img alt="firefox" src={ firefoxLogo } /> }>
+                <a href="https://addons.mozilla.org/en-US/firefox/addon/twitch-shungite">Firefox</a>
+            </Menu.Item>
+        </Menu>
+    );
+};
+
+const Index: React.FC<IndexProps> = () => {
+    const container = React.useRef<HTMLDivElement | null>(null);
+    const canvas = React.useRef<HTMLCanvasElement | null>(null);
+
+    React.useEffect(() => {
+        if (!container.current || !canvas.current) return;
+        const { cleanup } = initTwitchBackgroundRenderer({
+            canvas     : canvas.current,
+            parent     : container.current,
+            logoHeight : 100,
+            logoWidth  : 100,
+            angle      : Math.PI / 16,
+            speed      : 0.3
+        });
+
+        return cleanup;
+    }, [])
+
+    return (
+        <section ref={ container } className={ classnames(us.flex, us.alignCenter, us.justifyCenter, us.fullpageContainer, "home") }>
+            <canvas ref={ canvas } className="canvas" />
+            <div className={ classnames("content", us.flex, us.column, us.alignCenter) }>
+                <img alt="logo" className="logo" src="/logo-white.png"></img>
+                <Typography.Title level={ 1 }>SHUNGITE</Typography.Title>
+                <Dropdown overlay={ <ExtensionMenu /> }>
+                <Button>
+                    Download Extension <DownOutlined />
+                </Button>
+            </Dropdown>
+            </div>
+        </section>
     );
 };
 

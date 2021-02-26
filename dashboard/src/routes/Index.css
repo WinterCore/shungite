@@ -1,0 +1,28 @@
+.home {
+    margin: 0;
+    background-color: #6444a3;
+}
+
+.home .content {
+    position: relative;
+    z-index: 2;
+}
+
+.canvas {
+    position: absolute;
+    z-index: 1;
+}
+
+.home .logo {
+    height: 180px;
+    width: 180px;
+}
+
+.home .content h1.ant-typography {
+    color: #fff;
+    font-size: 3rem;
+}
+
+.ant-menu.ant-menu-vertical > .ant-menu-item img.ant-menu-item-icon {
+    height: 32px;
+}
