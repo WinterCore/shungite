@@ -9,8 +9,8 @@ export type TwitchUser = {
     email          : string;
     picture        : string;
     isAdmin        : boolean;
-    publicEmotes   : () => Promise<EmoteDoc[]>;
-    uploadedEmotes : () => Promise<EmoteDoc[]>;
+    publicEmotes   : (filter ?: any) => Promise<EmoteDoc[]>;
+    uploadedEmotes : (filter ?: any) => Promise<EmoteDoc[]>;
 };
 
 export type TwitchUserDoc = TwitchUser & Mongoose.Document;
@@ -24,15 +24,15 @@ const TwitchUserSchema: Mongoose.Schema<TwitchUserDoc> = new Mongoose.Schema({
     isAdmin   : { type: Boolean, default: false }
 });
 
-TwitchUserSchema.methods.publicEmotes = async function publicEmotes(this: TwitchUserDoc): Promise<EmoteDoc[]> {
+TwitchUserSchema.methods.publicEmotes = async function publicEmotes(this: TwitchUserDoc, filter: any = {}): Promise<EmoteDoc[]> {
     const publicEmotesIds: string[] = (await TwitchUserEmote.find({ user: this._id }, { emote: 1 }))
         .map(doc => doc.emote.toString());
 
-    return Emote.find({ isPrivate: false, status: EmoteStatus.APPROVED, _id: { $in: publicEmotesIds } });
+    return Emote.find({ ...filter, _id: { $in: publicEmotesIds } });
 };
 
-TwitchUserSchema.methods.uploadedEmotes = async function privateEmotes(this: TwitchUserDoc): Promise<EmoteDoc[]> {
-    return Emote.find({ status: EmoteStatus.APPROVED, owner: this._id })
+TwitchUserSchema.methods.uploadedEmotes = async function privateEmotes(this: TwitchUserDoc, filter: any): Promise<EmoteDoc[]> {
+    return Emote.find({ ...filter, owner: this._id })
 };
 
 export default Mongoose.model<TwitchUserDoc>("user", TwitchUserSchema);

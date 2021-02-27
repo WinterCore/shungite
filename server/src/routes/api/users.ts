@@ -8,6 +8,7 @@ import { userResource } from "./resources/user";
 import { emoteResource } from "./resources/emote";
 
 import NotFoundError from "../errors/notfound";
+import { EmoteStatus } from "../../database/models/emote";
 
 const router = Router();
 
@@ -18,8 +19,8 @@ router.get("/:username", co(async (req, res) => {
     const user = await TwitchUser.findOne({ username });
     if (!user) throw new NotFoundError();
 
-    const publicEmotes  = await user.publicEmotes();
-    const uploadedEmotes = await user.uploadedEmotes();
+    const publicEmotes = await user.publicEmotes({ status: EmoteStatus.APPROVED });
+    const uploadedEmotes = await user.uploadedEmotes({ status: EmoteStatus.APPROVED });
 
     res.json({
         data: {

@@ -24,6 +24,7 @@ const emoteUploader = Multer().single("emote");
 
 const EMOTES_PER_PAGE = 30;
 
+// Fetch approved emotes
 router.get("/", co(async (req, res) => {
     const page = +(req.query.page || "1") - 1; // Starts from 0
     const sort = req.query.sort?.toString();
@@ -37,6 +38,7 @@ router.get("/", co(async (req, res) => {
     res.json({ data: emotes.map(emoteResource(req)) });
 }));
 
+// Fetch all emotes (used by emote approvers)
 router.get("/op", authMiddleware, isAdminMiddleware, co(async (req, res) => {
     const page = +(req.query.page || "1") - 1; // Starts from 0
     const status = req.query.status?.toString();
@@ -53,6 +55,7 @@ router.get("/op", authMiddleware, isAdminMiddleware, co(async (req, res) => {
     res.json({ data: emotes.map(emoteDetailsResource(req)) });
 }));
 
+// Check if emote keyword is used
 router.get("/keyword/check", authMiddleware, co(async (req, res) => {
     if (!req.query.keyword) {
         res.json(false);
@@ -62,6 +65,7 @@ router.get("/keyword/check", authMiddleware, co(async (req, res) => {
     }
 }));
 
+// Fetch own emotes
 router.get("/own", authMiddleware, co(async (req, res) => {
     const user = req.user!;
 
