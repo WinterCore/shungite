@@ -3,17 +3,17 @@ import classnames from "classnames";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
 
-import { Space, Select, Row, Col } from "antd";
+import { Space, Row, Col } from "antd";
 
 import EmotesResource from "../components/EmotesResource";
+import QuerySelect from "../components/QuerySelect";
 import { GET_EMOTES } from "../api/index";
 
 import us from "../util.module.css";
+import { sortQuerySelectItems } from "../util/helpers";
 
-const Emotes: React.FC<EmotesProps> = ({ location, history }) => {
-    const sort = queryString.parse(location.search).sort?.toString() || undefined;
-
-    const handleChange = (v: string) => history.replace(`/emotes?sort=${v}`);
+const Emotes: React.FC<EmotesProps> = ({ location }) => {
+    const sort = queryString.parse(location.search).sort?.toString();
 
     return (
         <section className={ classnames(us.flex, us.justifyCenter) }>
@@ -25,17 +25,12 @@ const Emotes: React.FC<EmotesProps> = ({ location, history }) => {
             >
                 <Row justify="end">
                     <Col>
-                        <Select
-                            style={{ minWidth: 160 }}
-                            value={ sort }
+                        <QuerySelect
+                            items={ sortQuerySelectItems }
+                            queryKey="sort"
                             placeholder="Sort"
-                            onChange={ handleChange }
-                        >
-                            <Select.Option value="-userCount">Most Popular</Select.Option>
-                            <Select.Option value="userCount">Least Popular</Select.Option>
-                            <Select.Option value="-createdAt">Newest First</Select.Option>
-                            <Select.Option value="createdAt">Oldest First</Select.Option>
-                        </Select>
+                            style={{ minWidth: 150 }}
+                        />
                     </Col>
                 </Row>
                 <EmotesResource sort={ sort } endpoint={ GET_EMOTES() } />

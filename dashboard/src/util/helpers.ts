@@ -1,4 +1,5 @@
 import { EmoteStatus } from "../api/models";
+import { QuerySelectItem } from "../components/QuerySelect";
 
 export const formatDate = (str: string) => {
     const date = new Date(str);
@@ -27,3 +28,11 @@ export const getTagColor = (status: EmoteStatus) => {
             return "red";
     }
 };
+
+
+export const sortQuerySelectItems: QuerySelectItem[] = [
+    { text: "Most Popular", value: "-userCount" },
+    { text: "Least Popular", value: "userCount" },
+    { text: "Newest First", value: "-createdAt" },
+    { text: "Oldest First", value: "createdAt" },
+];
