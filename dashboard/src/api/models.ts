@@ -15,11 +15,13 @@ export interface UserDetails extends User {
 }
 
 export interface EmoteSnippet {
-    id         : string;
-    keyword    : string;
-    type       : EmoteType;
-    user_count : number;
-    created_at : string;
+    id          : string;
+    keyword     : string;
+    type        : EmoteType;
+    user_count  : number;
+    created_at  : string;
+    is_private ?: boolean;
+    status     ?: EmoteStatus;
 }
 
 export interface Emote extends EmoteSnippet {
