@@ -2,13 +2,13 @@ import React from "react";
 import { AxiosResponse } from "axios";
 import { useLocation } from "react-router";
 import classnames from "classnames";
-import { Link } from "react-router-dom";
 import { Button, Typography, Space, Menu, Dropdown } from "antd";
 import { DownOutlined, MenuOutlined } from '@ant-design/icons';
 
 import TwitchIcon from "../icons/Twitch";
 import Api, { LOGOUT } from "../api/index";
 import { SuccessResponse } from "../api/responses";
+import HybirdLink from "./HybirdLink";
 
 import { TWITCH_AUTH_URL } from "../config";
 
@@ -16,6 +16,7 @@ import { useUser } from "../contexts/user";
 
 import s from "./Header.module.css";
 import us from "../util.module.css";
+import { User } from "../api/models";
 
 const UserActionsMenu = ({ logout }: { logout: () => void }) => {
     const handleLogout = () => {
@@ -64,12 +65,27 @@ const UserCard: React.FC = () => {
     );
 };
 
-const links = [
-    { path: "/", text: "Home", exact: true, auth: false },
-    { path: "/emotes", text: "Emotes", exact: false, auth: false },
-    { path: "/dashboard", text: "Dashboard", exact: false, auth: true },
-    { path: "https://github.com/WinterCore/shungite/issues", text: "Support", exact: false, auth: false }
+type HeaderLink = {
+    path  : string;
+    text  : string;
+    exact : boolean;
+    auth  : boolean;
+    mod   : boolean;
+};
+
+const links: HeaderLink[] = [
+    { path: "/", text: "Home", exact: true, auth: false, mod: false },
+    { path: "/emotes", text: "Emotes", exact: false, auth: false, mod: false },
+    { path: "/dashboard", text: "Dashboard", exact: false, auth: true, mod: false },
+    { path: "/moderation", text: "Moderation", exact: false, auth: true, mod: true },
+    { path: "https://github.com/WinterCore/shungite/issues", text: "Support", exact: false, auth: false, mod: false }
 ];
+
+const isVisible = ({ auth, mod }: HeaderLink, user: User | null) => {
+    if (auth && !user) return false;
+    if (mod && (!user || !user.isAdmin)) return false;
+    return true;
+};
 
 const Header: React.FC<HeaderProps> = () => {
     const { pathname } = useLocation();
@@ -81,23 +97,19 @@ const Header: React.FC<HeaderProps> = () => {
                 <div className={ s.logo }><img src="/logo.png" alt="Logo" /></div>
                 <nav className={ s.nav }>
                     {
-                        links.map(({ path, text, exact, auth }) => {
+                        links.map((link) => {
+                            const { path, text, exact } = link;
                             const active = exact ? path === pathname : pathname.startsWith(path);
-                            if (auth && !user) return null;
+                            if (!isVisible(link, user)) return null;
 
                             return (
-                                path.startsWith("http")
-                                    ? (
-                                        <a rel="noreferrer" target="_blank" href={ path } key={ path } className={ s.navLink }>{ text }</a>
-                                    ) : (
-                                        <Link
-                                            key={ path }
-                                            className={ classnames(s.navLink, { [s.active]: active }) }
-                                            to={ path }
-                                        >
-                                            { text }
-                                        </Link>
-                                    )
+                                <HybirdLink
+                                    key={ path }
+                                    to={ path }
+                                    className={ classnames(s.navLink, { [s.active]: active }) }
+                                >
+                                    { text }
+                                </HybirdLink>
                             );
                         })
                     }
@@ -106,16 +118,23 @@ const Header: React.FC<HeaderProps> = () => {
                     <Dropdown overlay={(
                         <Menu>
                             {
-                                links.map(({ path, text }) => (
-                                    <Menu.Item key={ path }>
-                                        {
+                                links.map((link) => {
+                                    const { path, text, exact } = link;
+                                    if (!isVisible(link, user)) return null;
+                                    const active = exact ? path === pathname : pathname.startsWith(path);
 
-                                            path.startsWith("http")
-                                                ? <a rel="noreferrer" target="_blank" href={ path } key={ path }>{ text }</a>
-                                                : <Link to={ path }>{ text }</Link>
-                                        }
-                                    </Menu.Item>
-                                ))
+                                    return (
+                                        <Menu.Item key={ path }>
+                                            <HybirdLink
+                                                key={ path }
+                                                to={ path }
+                                                className={ classnames(s.navLink, { [s.active]: active }) }
+                                            >
+                                                { text }
+                                            </HybirdLink>
+                                        </Menu.Item>
+                                    );
+                                })
                             }
                         </Menu>
                     )}>

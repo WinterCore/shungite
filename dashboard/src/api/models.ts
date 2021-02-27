@@ -3,10 +3,11 @@ export type EmoteType = "image" | "gif";
 export type EmoteStatus = "approved" | "pending" | "rejected";
 
 export interface User {
-    id       : string;
-    username : string;
-    name     : string;
-    picture  : string;
+    id        : string;
+    username  : string;
+    name      : string;
+    picture   : string;
+    isAdmin  ?: boolean;
 }
 
 export interface UserDetails extends User {
