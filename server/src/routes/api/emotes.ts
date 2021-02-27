@@ -6,7 +6,7 @@ import Validator     from "validator";
 import Emote, { EmoteStatus } from "../../database/models/emote";
 import TwitchUserEmote        from "../../database/models/twitch-user-emote";
 import { processEmote }       from "../services/emote";
-import { co, getSortValue }   from "../helpers";
+import { clean, co, getSortValue }   from "../helpers";
 import Logger                 from "../../logger";
 
 import authMiddleware, { populateUser } from "../middleware/auth";
@@ -39,16 +39,14 @@ router.get("/", co(async (req, res) => {
 }));
 
 // Fetch all emotes (used by emote approvers)
-router.get("/op", authMiddleware, isAdminMiddleware, co(async (req, res) => {
-    const page = +(req.query.page || "1") - 1; // Starts from 0
+router.get("/mod", authMiddleware, isAdminMiddleware, co(async (req, res) => {
+    const page   = +(req.query.page || "1") - 1;  // Starts from 0
     const status = req.query.status?.toString();
-
-    const filter: Record<string, any> = {};
-    if (status)
-        filter.status = status;
+    const sort   = req.query.sort?.toString();
 
     const emotes = await Emote
-        .find(filter)
+        .find(clean({ status }))
+        .sort(clean(getSortValue(sort, ["userCount", "createdAt"])))
         .limit(EMOTES_PER_PAGE)
         .skip(page * EMOTES_PER_PAGE);
 

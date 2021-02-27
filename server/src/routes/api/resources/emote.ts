@@ -5,7 +5,7 @@ import { ApiResource } from "./index";
 
 import { userResource } from "./user";
 
-import { clean } from "./helpers";
+import { clean } from "../../helpers";
 
 export const emoteResource: ApiResource<EmoteDoc> = (req) => (emote) => {
     const owner = emote.owner as TwitchUserDoc;

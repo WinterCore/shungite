@@ -33,7 +33,7 @@ const Emotes: React.FC<EmotesProps> = ({ location }) => {
                         />
                     </Col>
                 </Row>
-                <EmotesResource sort={ sort } endpoint={ GET_EMOTES() } />
+                <EmotesResource params={{ sort }} endpoint={ GET_EMOTES() } />
             </Space>
         </section>
     );

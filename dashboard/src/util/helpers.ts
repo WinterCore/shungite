@@ -36,3 +36,9 @@ export const sortQuerySelectItems: QuerySelectItem[] = [
     { text: "Newest First", value: "-createdAt" },
     { text: "Oldest First", value: "createdAt" },
 ];
+
+export const statusQuerySelectItems: QuerySelectItem[] = [
+    { text: "Pending", value: "pending" },
+    { text: "Approved", value: "approved" },
+    { text: "Rejected", value: "rejected" },
+];

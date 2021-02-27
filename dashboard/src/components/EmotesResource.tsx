@@ -24,9 +24,8 @@ export const Emotes: React.FC<EmotesProps> = ({ emotes, withStatus = false }) =>
 
 const getList = (data: unknown): EmoteSnippet[] => (data as GetEmotesResponse).data;
 
-const EmotesResource: React.FC<EmotesResourceProps> = ({ sort, endpoint, withStatus = false }) => {
+const EmotesResource: React.FC<EmotesResourceProps> = ({ params = {}, endpoint, withStatus = false }) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
-    const params = { sort };
     const { isLoading, data, error, isLoadingMore } = useInfiniteApiScroll<EmoteSnippet>({ params, parent: containerRef.current, endpoint, getList });
 
     return (
@@ -43,7 +42,7 @@ const EmotesResource: React.FC<EmotesResourceProps> = ({ sort, endpoint, withSta
 };
 
 interface EmotesResourceProps {
-    sort       ?: string;
+    params     ?: Record<string, string | undefined>;
     withStatus ?: boolean;
     endpoint    : AxiosRequestConfig;
 }
