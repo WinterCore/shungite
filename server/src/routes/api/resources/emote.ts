@@ -7,14 +7,18 @@ import { userResource } from "./user";
 
 import { clean } from "./helpers";
 
-export const emoteResource: ApiResource<EmoteDoc> = (req) => (emote) => clean({
-    id         : emote._id,
-    keyword    : emote.keyword,
-    type       : emote.type,
-    user_count : emote.userCount,
-    owner      : emote.populated("owner") ? userResource(req)(emote.owner as TwitchUserDoc) : null,
-    created_at : emote.createdAt,
-});
+export const emoteResource: ApiResource<EmoteDoc> = (req) => (emote) => {
+    const owner = emote.owner as TwitchUserDoc;
+    return clean({
+        id         : emote._id,
+        keyword    : emote.keyword,
+        type       : emote.type,
+        user_count : emote.userCount,
+        owner      : emote.populated("owner") ? userResource(req)(emote.owner as TwitchUserDoc) : null,
+        status     : req.user && (owner._id.equals(req.user.id) || req.user.isAdmin),
+        created_at : emote.createdAt,
+    });
+};
 
 export const emoteDetailsResource: ApiResource<EmoteDoc> = (req) => (emote) => {
     const owner = emote.owner as TwitchUserDoc;
