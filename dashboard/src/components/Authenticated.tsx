@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router";
+import { Redirect, RouteComponentProps } from "react-router";
 
 import { useUser } from "../contexts/user";
 
@@ -10,7 +10,7 @@ const Authenticated: React.FC<AuthenticatedProps> = ({ component: Component, ...
     return <Component { ...props } />
 };
 
-interface AuthenticatedProps {
-    component: React.FC;
+interface AuthenticatedProps extends RouteComponentProps {
+    component: React.FC<any>;
 }
 export default Authenticated;

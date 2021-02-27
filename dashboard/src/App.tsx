@@ -24,8 +24,8 @@ const App: React.FC = () => {
                     <Route exact path="/" component={ Index } />
                     <Route exact path="/emotes" component={ Emotes } />
                     <Route exact path="/emotes/:id" component={ Emote } />
-                    <Route exact path="/dashboard" render={ () => <Authenticated component={ Dashboard } /> } />
-                    <Route exact path="/moderation" render={ () => <Authenticated component={ Moderation } /> } />
+                    <Route exact path="/dashboard" render={ props => <Authenticated component={ Dashboard } { ...props } /> } />
+                    <Route exact path="/moderation" render={ props => <Authenticated component={ Moderation } { ...props } /> } />
                     <Route exact path="/users/:username" component={ Users } />
                     <Route exact path="/confirm-twitch-login" component={ ConfirmTwitchLogin } />
                     <Route component={ NotFound } />
