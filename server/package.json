@@ -1,7 +1,7 @@
 {
-  "name": "bbttv-server",
+  "name": "shungite-server",
   "version": "0.1.0",
-  "description": "BBTTV's dashboard server",
+  "description": "Shungite's dashboard server",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/WinterCore/bbttv.git"
+    "url": "git+ssh://git@github.com/WinterCore/shungite.git"
   },
   "author": "WinterCore",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/WinterCore/bbttv/issues"
+    "url": "https://github.com/WinterCore/shungite/issues"
   },
-  "homepage": "https://github.com/WinterCore/bbttv#readme",
+  "homepage": "https://github.com/WinterCore/shungite#readme",
   "devDependencies": {
     "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.9",
