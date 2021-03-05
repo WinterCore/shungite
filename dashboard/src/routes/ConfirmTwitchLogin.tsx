@@ -2,11 +2,10 @@ import React from "react";
 import queryString from "query-string";
 import { AxiosResponse } from "axios";
 import { RouteComponentProps } from "react-router-dom";
+import { Spin, Row, Col, Typography } from "antd";
 
 import Api, { getResponseError, LOGIN } from "../api/index";
 import { LoginResponse } from "../api/responses";
-
-import { Spin, Row, Col, Typography } from "antd";
 
 import { useUser } from "../contexts/user";
 

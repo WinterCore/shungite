@@ -1,8 +1,7 @@
 import React from "react";
 import queryString from "query-string";
-
-import Select from "antd/lib/select";
 import { useLocation, useHistory } from "react-router";
+import { Select } from "antd";
 
 export type QuerySelectItem = {
     value : string;

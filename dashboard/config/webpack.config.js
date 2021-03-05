@@ -543,14 +543,12 @@ module.exports = function (webpackEnv) {
                 options: {
                   lessOptions: {
                     javascriptEnabled: true,
+                    modifyVars: {
+                      'primary-color': '#722ed1'
+                    }
                   },
                 },
               }],
-              // Don't consider CSS imports dead code even if the
-              // containing package claims to have no side effects.
-              // Remove this when webpack adds a warning or an error for this.
-              // See https://github.com/webpack/webpack/issues/6571
-              sideEffects: true,
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
@@ -601,8 +599,7 @@ module.exports = function (webpackEnv) {
             : undefined
         )
       ),
-      isEnvDevelopment &&
-        new BundleAnalyzerPlugin(),
+      new BundleAnalyzerPlugin(),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358

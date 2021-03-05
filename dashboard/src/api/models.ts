@@ -1,4 +1,3 @@
-
 export type EmoteType = "image" | "gif";
 export type EmoteStatus = "approved" | "pending" | "rejected";
 

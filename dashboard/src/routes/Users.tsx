@@ -9,7 +9,6 @@ import { GET_USER } from "../api/index";
 import { GetUserResponse } from "../api/responses";
 import { UserDetails } from "../api/models";
 
-
 import useApi from "../hooks/api";
 import us from "../util.module.css";
 

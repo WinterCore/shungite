@@ -6,8 +6,8 @@ import { RouteComponentProps } from "react-router-dom";
 import { Space, Row, Col } from "antd";
 
 import EmotesResource from "../components/EmotesResource";
-import QuerySelect from "../components/QuerySelect";
 import { GET_EMOTES } from "../api/index";
+import QuerySelect from "../components/QuerySelect";
 
 import us from "../util.module.css";
 import { sortQuerySelectItems } from "../util/helpers";

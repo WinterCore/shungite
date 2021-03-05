@@ -2,8 +2,9 @@ import React from "react";
 import { AxiosResponse } from "axios";
 import { useLocation } from "react-router";
 import classnames from "classnames";
+
 import { Button, Typography, Space, Menu, Dropdown } from "antd";
-import { DownOutlined, MenuOutlined } from '@ant-design/icons';
+import { DownOutlined, MenuOutlined } from "@ant-design/icons";
 
 import TwitchIcon from "../icons/Twitch";
 import Api, { LOGOUT } from "../api/index";

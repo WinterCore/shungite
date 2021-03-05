@@ -2,14 +2,13 @@ import React from "react";
 import queryString from "query-string";
 import classnames from "classnames";
 import { RouteComponentProps } from "react-router-dom";
-
 import { Space, Row, Col } from "antd";
 import { GET_MOD_EMOTES } from "../api/index";
 
-import us from "../util.module.css";
 import EmotesResource from "../components/EmotesResource";
 import QuerySelect from "../components/QuerySelect";
 import { sortQuerySelectItems, statusQuerySelectItems } from "../util/helpers";
+import us from "../util.module.css";
 
 const Moderation: React.FC<ModerationProps> = ({ location }) => {
     const params = queryString.parse(location.search);

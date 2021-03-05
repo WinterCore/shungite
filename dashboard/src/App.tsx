@@ -1,17 +1,17 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
+import { UserProvider } from "./contexts/user";
+
+import NotFound from "./routes/NotFound";
 import Index from "./routes/Index";
 import Emotes from "./routes/Emotes";
 import Emote from "./routes/Emote";
 import Dashboard from "./routes/Dashboard";
-import Users from "./routes/Users";
 import Moderation from "./routes/Moderation";
+import Users from "./routes/Users";
 import ConfirmTwitchLogin from "./routes/ConfirmTwitchLogin";
-import NotFound from "./routes/NotFound";
 
 import Header from "./components/Header";
-
-import { UserProvider } from "./contexts/user";
 
 import Authenticated from "./components/Authenticated";
 

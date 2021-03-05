@@ -8,9 +8,9 @@ import { Emotes } from "../components/EmotesResource";
 import { GetUserResponse } from "../api/responses";
 import { GET_OWN_EMOTES } from "../api/index";
 import ApiResourceRenderer from "../components/ResourceRenderer";
+import EmoteForm from "../components/EmoteForm";
 
 import useApi from "../hooks/api";
-import EmoteForm from "../components/EmoteForm";
 
 import us from "../util.module.css";
 

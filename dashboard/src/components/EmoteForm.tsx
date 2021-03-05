@@ -1,14 +1,13 @@
 import React from "react";
 import { AxiosResponse } from "axios";
-import { Input, Form, Switch, Upload, Button, notification } from "antd";
+import { Switch, Input, Upload, Button, notification, Form } from "antd";
+import { RuleObject } from "antd/es/form";
+
 import { PlusOutlined } from "@ant-design/icons";
-import { RuleObject } from "antd/lib/form";
 
 import Api, { EMOTE_CHECK_KEYWORD, CREATE_EMOTE, getResponseError } from "../api/index";
 import { SuccessResponse } from "../api/responses";
 import { getImageFilePreview } from "../util/helpers";
-
-import "./EmoteForm.css";
 
 const layout = {
     labelCol   : { span: 6 },

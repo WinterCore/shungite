@@ -3,11 +3,10 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
-import "./theme.less";
 
 ReactDOM.render(
     <App />,
-    document.getElementById("root")
+    document.getElementById("root"),
 );
 
 // If you want to start measuring performance in your app, pass a function
