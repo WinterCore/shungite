@@ -11,3 +11,5 @@ export const DELETE_EMOTE        = (id: string): ARC => ({ method: "DELETE", url
 export const GET_OWN_EMOTES      = (): ARC => ({ method: "GET", url: "/emotes/own" })
 export const GET_USER            = (username: string): ARC => ({ method: "GET", url: `/users/${username}` });
 export const EMOTE_CHECK_KEYWORD = (): ARC => ({ method: "GET", url: "/emotes/keyword/check" });
+export const APPROVE_EMOTE       = (id: string): ARC => ({ method: "POST", url: `/emotes/${id}/approve` });
+export const REJECT_EMOTE        = (id: string): ARC => ({ method: "POST", url: `/emotes/${id}/reject` });

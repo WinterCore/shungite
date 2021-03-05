@@ -20,10 +20,12 @@ export const getResponseError = (e: AxiosError<ErrorResponse>): string => {
 
     if (e.response.status === 422) {
         const errors = (e.response.data as Required<ErrorResponse>).errors;
-        return Object.keys(errors).reduce((a, k) => {
-            a.push(errors[k]);
+        const errorStr = Object.keys(errors).reduce((a, k) => {
+            a.push(`${k}: ${errors[k]}`);
             return a;
         }, [] as string[]).join("<br />");
+
+        return `Errors | ${errorStr}`;
     }
 
     return e.response.data.message;

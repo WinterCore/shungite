@@ -18,13 +18,13 @@ router.get("/:keyword/:size", co(async (req, res, next) => {
     const { size, keyword } = req.params;
     if (Object.keys(EMOTE_SIZES).indexOf(size) === -1) throw new BadRequestError();
 
-    const emote = await Emote.findOne({ keyword });
+    const emote = Validator.isMongoId(keyword) ? await Emote.findById(keyword) : await Emote.findOne({ keyword });
     if (!emote) throw new NotFoundError();
 
     res.setHeader("Content-Type", emote.type === "gif" ? "image/gif" : "image/png");
 
     const stream = createReadStream(Path.join(EMOTE_DIRECTORY, emote._id.toString(), size));
-    stream.on("error", (e) => console.log(e) as unknown as undefined || next(new NotFoundError()));
+    stream.on("error", (e) => next(e));
     stream.on("ready", () => stream.pipe(res));
 }));
 

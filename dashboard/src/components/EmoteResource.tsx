@@ -2,32 +2,35 @@ import React from "react";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
 import { AxiosResponse } from "axios";
-import { Row, Col, Typography, Tooltip, Button, Tag, notification } from "antd";
+import { Row, Col, Typography, Tooltip, Button, Form, Tag, notification, Input } from "antd";
 
 import {
     UserOutlined,
     CalendarOutlined,
     LineChartOutlined,
     PlusOutlined,
-    MinusOutlined
+    MinusOutlined,
+    CheckOutlined,
+    CloseOutlined,
 } from "@ant-design/icons";
-
-import { Emote } from "../api/models";
 
 import { formatDate, getTagColor } from "../util/helpers";
 import { EMOTE_ASSET_URL, EmoteSize } from "../config";
 import { useUser } from "../contexts/user";
 
-import Api, { ADD_EMOTE, DELETE_EMOTE, getResponseError } from "../api/index";
+import Api, { ADD_EMOTE, DELETE_EMOTE, APPROVE_EMOTE, REJECT_EMOTE, getResponseError } from "../api/index";
 
 import us from "../util.module.css";
 import { SuccessResponse } from "../api/responses";
 
 import "./EmoteResource.css";
+import { useEmote } from "../contexts/emote";
+import { EmoteStatus } from "../api/models";
 
 const EmoteExtraInfo: React.FC<EmoteProps> = (props) => {
-    const { owner, status, rejectionReason } = props;
     const { user } = useUser();
+    const { emote } = useEmote();
+    const { owner, status, rejectionReason } = emote;
 
     if (!user || user.id !== owner.id) return null;
 
@@ -48,17 +51,17 @@ const EmoteExtraInfo: React.FC<EmoteProps> = (props) => {
     );
 };
 
-const EmoteActions: React.FC<EmoteProps> = (props) => {
+const EmoteActions: React.FC<EmoteProps> = () => {
     const { user } = useUser();
-    const [added, setAdded] = React.useState<boolean>(props.added);
+    const { emote, update } = useEmote();
     const [loading, setLoading] = React.useState<boolean>(false);
 
     const handleButtonClick = () => {
         if (loading) return;
         setLoading(true);
-        Api(added ? DELETE_EMOTE(props.id) : ADD_EMOTE(props.id))
+        Api(emote.added ? DELETE_EMOTE(emote.id) : ADD_EMOTE(emote.id))
             .then(({ data: { message } }: AxiosResponse<SuccessResponse>) => {
-                setAdded(!added);
+                update({ added: !emote.added });
                 notification.success({ message });
                 setLoading(false);
             }).catch((e) => {
@@ -67,11 +70,11 @@ const EmoteActions: React.FC<EmoteProps> = (props) => {
             });
     };
 
-    if (!user || props.owner.id === user.id) return null;
+    if (!user || emote.owner.id === user.id) return null;
 
     return (
         <Row justify="center" style={{ marginTop: 50 }}>
-            {added
+            {emote.added
                 ? (
                     <Button
                         loading={ loading }
@@ -97,8 +100,71 @@ const EmoteActions: React.FC<EmoteProps> = (props) => {
     );
 };
 
+const EmoteModActions: React.FC = () => {
+    const { user }              = useUser();
+    const { emote, update }     = useEmote();
+    const [form]                = Form.useForm();
+    const [loading, setLoading] = React.useState<boolean>(false);
+
+    if (emote.status !== "pending" || !user || !user.isAdmin) return null;
+
+    const changeStatus = (status: EmoteStatus) => {
+        return () => {
+            if (loading) return;
+            setLoading(true);
+            const reason = form.getFieldValue("reason");
+            Api({ ...(status === "approved" ? APPROVE_EMOTE(emote.id) : REJECT_EMOTE(emote.id)), data: { reason } })
+                .then(({ data: { message } }: AxiosResponse<SuccessResponse>) => {
+                    update({ status, rejectionReason: reason });
+                    notification.success({ message });
+                    setLoading(false);
+                }).catch((e) => {
+                    notification.error({ message: getResponseError(e) });
+                    setLoading(false);
+                });
+        };
+    };
+
+    return (
+        <div className={ classnames(us.flex, us.column, us.alignCenter) } style={{ marginTop: 50 }}>
+            <div className={ classnames(us.flex) }>
+                <Form form={ form } onFinish={ changeStatus("rejected") }>
+                    <Form.Item
+                        name="reason"
+                        style={{ margin: 0, display: "inline-block" }}
+                        rules={[
+                            { required: true, message: "This field is required" },
+                        ]}
+                    >
+                        <Input placeholder="Rejection Reason" />
+                    </Form.Item>
+
+                    <Button
+                        icon={ <CloseOutlined /> }
+                        type="primary"
+                        disabled={ loading }
+                        onClick={ form.submit }
+                        danger
+                    >
+                        Reject
+                    </Button>
+                </Form>
+                <Button
+                    icon={ <CheckOutlined /> }
+                    type="primary"
+                    disabled={ loading }
+                    onClick={ changeStatus("approved") }
+                >
+                    Approve
+                </Button>
+            </div>
+        </div>
+    );
+};
+
 const EmoteResource: React.FC<EmoteProps> = (props) => {
-    const { keyword, owner, user_count, is_private, created_at } = props;
+    const { emote } = useEmote();
+    const { keyword, owner, user_count, is_private, created_at } = emote;
 
     return (
 
@@ -133,8 +199,9 @@ const EmoteResource: React.FC<EmoteProps> = (props) => {
                             ))
                         }
                     </div>
-                    <EmoteExtraInfo { ...props } />
-                    <EmoteActions { ...props } />
+                    <EmoteExtraInfo />
+                    <EmoteActions />
+                    <EmoteModActions />
                 </Col>
             </Row>
         </div>
@@ -142,6 +209,6 @@ const EmoteResource: React.FC<EmoteProps> = (props) => {
 };
 
 
-interface EmoteProps extends Emote {}
+interface EmoteProps {}
 
 export default EmoteResource;

@@ -62,3 +62,28 @@ export const deleteChannelEmote: RequestHandler = co(async (req, _, next) => {
         throw new UnauthorizedError("You don't have this emote in your emotes list.");
     next();
 });
+
+export const approveEmote: RequestHandler = co(async (req, _, next) => {
+    const { id } = req.params;
+    if (!Validator.isMongoId(id)) throw new NotFoundError();
+
+    const emote = await Emote.findById(id);
+    if (!emote) throw new NotFoundError();
+    if (emote.status !== EmoteStatus.PENDING) throw new UnauthorizedError("Only pending emotes can be approved!");
+
+    next();
+});
+
+export const rejectEmote: RequestHandler = co(async (req, _, next) => {
+    const { id }     = req.params;
+    const { reason } = req.body;
+
+    if (!Validator.isMongoId(id)) throw new NotFoundError();
+    if (reason === undefined || reason.length === 0) throw new ValidationError({ reason: "This field is required" });
+
+    const emote = await Emote.findById(id);
+    if (!emote) throw new NotFoundError();
+    if (emote.status !== EmoteStatus.PENDING) throw new UnauthorizedError("Only pending emotes can be rejected!");
+
+    next();
+});

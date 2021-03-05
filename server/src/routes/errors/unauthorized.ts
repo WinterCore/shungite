@@ -3,7 +3,7 @@ import RoutingError from "./error";
 class UnauthorizedError extends RoutingError {
     private _message: string;
 
-    constructor(message: string = "You're not allowed to be here!") {
+    constructor(message: string = "You're not allowed to perform this action!") {
         super();
         this._message = message;
     }

@@ -12,7 +12,7 @@ import Logger                 from "../../logger";
 import authMiddleware, { populateUser } from "../middleware/auth";
 import isAdminMiddleware from "../middleware/is-admin";
 
-import { createEmote, addChannelEmote, deleteChannelEmote } from "../middleware/validation/emotes";
+import { createEmote, addChannelEmote, deleteChannelEmote, approveEmote, rejectEmote } from "../middleware/validation/emotes";
 
 import { emoteResource, emoteDetailsResource } from "./resources/emote";
 
@@ -51,6 +51,27 @@ router.get("/mod", authMiddleware, isAdminMiddleware, co(async (req, res) => {
         .skip(page * EMOTES_PER_PAGE);
 
     res.json({ data: emotes.map(emoteDetailsResource(req)) });
+}));
+
+// Approve an emote (used by emote approvers)
+router.post("/:id/approve", authMiddleware, isAdminMiddleware, approveEmote, co(async (req, res) => {
+    const { id } = req.params;
+
+    const emote = (await Emote.findById(id))!;
+
+    console.log(await emote.update({ status: EmoteStatus.APPROVED }));
+
+    res.json({ message: "Success!" });
+}));
+
+// Reject an emote (used by emote approvers)
+router.post("/:id/reject", authMiddleware, isAdminMiddleware, rejectEmote, co(async (req, res) => {
+    const { id } = req.params;
+
+    const emote = (await Emote.findById(id))!;
+    console.log(await emote.update({ status: EmoteStatus.REJECTED, rejectionReason: req.body.reason }));
+
+    res.json({ message: "Success!" });
 }));
 
 // Check if emote keyword is used

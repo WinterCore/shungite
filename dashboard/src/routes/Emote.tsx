@@ -7,6 +7,7 @@ import { GET_EMOTE } from "../api/index";
 import { GetEmoteDetailsResponse } from "../api/responses";
 
 import EmoteResource from "../components/EmoteResource";
+import { EmoteProvider } from "../contexts/emote";
 
 import useApi from "../hooks/api";
 
@@ -19,7 +20,7 @@ const Emote: React.FC<EmoteProps> = ({ match: { params } }) => {
             <ApiResourceRenderer
                 isLoading={ isLoading }
                 error={ error }
-                render={ () => <EmoteResource { ...data!.data } /> }
+                render={ () => <EmoteProvider emote={ data!.data }><EmoteResource /></EmoteProvider> }
             />
         </section>
     );
