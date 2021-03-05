@@ -105,11 +105,10 @@ router.post("/", authMiddleware, emoteUploader, createEmote, co(async (req, res)
 }));
 
 // Get emote details
-router.get("/:id", populateUser, co(async (req, res) => {
-    const { id } = req.params;
-    if (!Validator.isMongoId(id)) throw new NotFoundError();
+router.get("/:keyword", populateUser, co(async (req, res) => {
+    const { keyword } = req.params;
 
-    const emote = await Emote.findById(id).populate("owner");
+    const emote = await Emote.findOne({ keyword }).populate("owner");
     if (!emote) throw new NotFoundError();
 
     emote.added = req.user ? await emote.isAdded(req.user._id) : false;

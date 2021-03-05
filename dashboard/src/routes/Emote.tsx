@@ -11,8 +11,8 @@ import EmoteResource from "../components/EmoteResource";
 import useApi from "../hooks/api";
 
 const Emote: React.FC<EmoteProps> = ({ match: { params } }) => {
-    const { id } = params;
-    const { data, error, isLoading } = useApi<GetEmoteDetailsResponse>(GET_EMOTE(id));
+    const { keyword } = params;
+    const { data, error, isLoading } = useApi<GetEmoteDetailsResponse>(GET_EMOTE(keyword));
 
     return (
         <section>
@@ -25,7 +25,7 @@ const Emote: React.FC<EmoteProps> = ({ match: { params } }) => {
     );
 };
 
-type Params = { id: string };
+type Params = { keyword: string };
 
 interface EmoteProps extends RouteComponentProps<Params> {}
 

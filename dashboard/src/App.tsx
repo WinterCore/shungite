@@ -23,7 +23,7 @@ const App: React.FC = () => {
                 <Switch>
                     <Route exact path="/" component={ Index } />
                     <Route exact path="/emotes" component={ Emotes } />
-                    <Route exact path="/emotes/:id" component={ Emote } />
+                    <Route exact path="/emotes/:keyword" component={ Emote } />
                     <Route exact path="/dashboard" render={ props => <Authenticated component={ Dashboard } { ...props } /> } />
                     <Route exact path="/moderation" render={ props => <Authenticated component={ Moderation } { ...props } /> } />
                     <Route exact path="/users/:username" component={ Users } />

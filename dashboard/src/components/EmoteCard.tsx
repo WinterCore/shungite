@@ -9,16 +9,16 @@ import { getTagColor } from "../util/helpers";
 
 import us from "../util.module.css";
 
-const EmoteCard: React.FC<EmoteCardProps> = ({ id, keyword, status, withStatus = false }) => {
+const EmoteCard: React.FC<EmoteCardProps> = ({ keyword, status, withStatus = false }) => {
     const w = EMOTE_SIZES.x3;
     const Img = (
         <div className={ classnames(us.flex, us.justifyCenter, us.emoteImage) }>
-            <img alt={ keyword } src={ EMOTE_ASSET_URL(id, "x3") } style={{ width: w }} />
+            <img alt={ keyword } src={ EMOTE_ASSET_URL(keyword, "x3") } style={{ width: w }} />
         </div>
     );
 
     return (
-        <Link to={`/emotes/${ id }`}>
+        <Link to={`/emotes/${ keyword }`}>
             <Card
                 style={{ height: "100%" }}
                 cover={ Img }

@@ -98,7 +98,7 @@ const EmoteActions: React.FC<EmoteProps> = (props) => {
 };
 
 const EmoteResource: React.FC<EmoteProps> = (props) => {
-    const { id, keyword, owner, user_count, is_private, created_at } = props;
+    const { keyword, owner, user_count, is_private, created_at } = props;
 
     return (
 
@@ -128,7 +128,7 @@ const EmoteResource: React.FC<EmoteProps> = (props) => {
                         {
                             (["x1", "x2", "x3"] as EmoteSize[]).map(s => (
                                 <div key={ s }>
-                                    <img src={ EMOTE_ASSET_URL(id, s) } alt={ keyword } />
+                                    <img src={ EMOTE_ASSET_URL(keyword, s) } alt={ keyword } />
                                 </div>
                             ))
                         }
