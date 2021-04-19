@@ -24,7 +24,7 @@ export const TWITCH_REDIRECT_URI  = `${FRONTEND_BASE_URI}/confirm-twitch-login`;
 
 export const EMOTE_DIRECTORY = Path.resolve(process.cwd(), "storage/emotes");
 
-export const CORS_WHITELIST = ["https://www.twitch.tv", "https://twitch.tv", "https://shungite.upperdown.me"];
+export const CORS_WHITELIST = ["https://www.twitch.tv", "https://twitch.tv", "https://shungite.wintercore.dev"];
 
 export type EmoteSize = "x1" | "x2" | "x3";
 export type EmoteSizeObj<T> = { [key in EmoteSize] ?: T };
